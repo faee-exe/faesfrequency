@@ -1,55 +1,15 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>My Live Radio</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <style>
-    body{background:#0f0f0f;color:#fff;font-family:Arial,sans-serif;
-         display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;margin:0}
-    h1{margin-bottom:20px}
-    #status{margin-bottom:18px}
-    #playBtn{background:#1db954;border:none;padding:20px 30px;border-radius:999px;color:#fff;font-size:20px;
-             cursor:pointer;box-shadow:0 6px 30px #1db95455;display:none}
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fae Radio</title>
 </head>
-<body>
-  <h1>🫰 faesrantsfromnantwich </h1>
-  <div id="status">Checking live status…</div>
-  <button id="playBtn">▶️ Play</button>
-
-  <script>
-    const streamURL = "http://92.30.165.19:8000/live.mp3"; // replace with your real IP
-    const statusEl = document.getElementById('status');
-    const playBtn = document.getElementById('playBtn');
-    const audio = new Audio(streamURL);
-    audio.preload = 'none';
-    let playing = false;
-
-    async function checkLive() {
-      try {
-        const r = await fetch(streamURL, {method:'GET',headers:{'Range':'bytes=0-1023'},cache:'no-store'});
-        if (r.ok && r.status!==404) {
-          statusEl.textContent="🔴 Live Now!";
-          playBtn.style.display='inline-block';
-        } else {
-          statusEl.textContent="⚫️ Offline";
-          playBtn.style.display='none';
-        }
-      } catch {
-        statusEl.textContent="⚫️ Offline";
-        playBtn.style.display='none';
-      }
-    }
-    checkLive();
-    setInterval(checkLive,5000);
-
-    playBtn.onclick=async()=>{
-      if(!playing){
-        try{await audio.play();playBtn.textContent='⏸️';playing=true;}
-        catch{alert('Browser blocked autoplay — click Play again.');}
-      }else{audio.pause();playBtn.textContent='▶️';playing=false;}
-    };
-  </script>
+<body style="text-align:center; font-family:sans-serif; margin-top:50px;">
+  <h1>🎧 Fae Radio — Live</h1>
+  <audio id="player" controls>
+    <source src="http://92.30.165.19:8000/live" type="audio/mpeg">
+    Your browser does not support audio playback.
+  </audio>
 </body>
 </html>
