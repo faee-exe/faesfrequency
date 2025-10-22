@@ -148,23 +148,46 @@
       }
     });
 
-    // Stream online/offline check
-    async function checkStream() {
+// Stream online/offline check (improved)
+async function checkStream() {
+  let online = false;
+
+  try {
+    await fetch(streamURL, { method: 'HEAD', mode: 'no-cors' });
+    online = true;
+  } catch {}
+
+  if (online) {
+    statusDiv.textContent = '🎧 Live Now';
+    statusDiv.classList.add('live');
+    statusDiv.classList.remove('offline');
+    playButton.classList.remove('offline');
+    glowRing.style.opacity = '1';
+  } else {
+    // Wait 3 seconds before showing offline
+    setTimeout(async () => {
       try {
         await fetch(streamURL, { method: 'HEAD', mode: 'no-cors' });
+        online = true;
+      } catch {}
+      if (online) {
         statusDiv.textContent = '🎧 Live Now';
         statusDiv.classList.add('live');
         statusDiv.classList.remove('offline');
-      } catch (err) {
-        statusDiv.textContent = '⚠️ Offline';
-        statusDiv.classList.add('offline');
+        glowRing.style.opacity = '1';
+      } else {
+        // Hide text instead of showing "Offline"
+        statusDiv.textContent = '';
         statusDiv.classList.remove('live');
-        playButton.classList.add('offline');
         glowRing.style.opacity = '0';
       }
-    }
-    setInterval(checkStream, 10000);
-    checkStream();
+    }, 3000);
+  }
+}
+
+setInterval(checkStream, 10000);
+checkStream();
+
 
     // Audio Visualizer
     const canvas = document.getElementById('visualizer');
