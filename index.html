@@ -148,19 +148,30 @@
       }
     });
 
-    // Stream online/offline check
-    async function checkStream() {
-      try {
-        await fetch(streamURL, { method: 'HEAD', mode: 'no-cors' });
-        statusDiv.textContent = '🎧 Live Now';
-        statusDiv.classList.add('live');
-        statusDiv.classList.remove('offline');
-      } catch (err) {
-        // remove problem 
-      }
-    }
-    setInterval(checkStream, 10000);
-    checkStream();
+// --- Reliable stream status detection ---
+audio.addEventListener('playing', () => {
+  statusDiv.textContent = '🎧 Live Now';
+  statusDiv.classList.add('live');
+  statusDiv.classList.remove('offline');
+  playButton.classList.add('live');
+  glowRing.style.opacity = '1';
+});
+
+audio.addEventListener('pause', () => {
+  // Pause means user stopped playback, not necessarily offline
+  statusDiv.textContent = '';
+  statusDiv.classList.remove('live');
+  playButton.classList.remove('live');
+  glowRing.style.opacity = '0';
+});
+
+audio.addEventListener('error', () => {
+  // Only show Offline if audio actually fails
+  statusDiv.textContent = ''; // hide "Offline" entirely
+  statusDiv.classList.remove('live');
+  playButton.classList.remove('live');
+  glowRing.style.opacity = '0';
+});
 
     // Audio Visualizer
     const canvas = document.getElementById('visualizer');
