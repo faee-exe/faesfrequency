@@ -59,6 +59,7 @@
       letter-spacing: 0.05em;
       font-size: 1em;
       color: #000;
+      min-height: 20px;
     }
 
     #liveTag {
@@ -70,6 +71,9 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 20px;
+      min-width: 80px;
+      background: #999;
+      color: #fff;
     }
 
     .live {
@@ -80,6 +84,11 @@
     .offline {
       background: #999;
       color: #fff;
+    }
+
+    .paused {
+      background: #d6d6d2;
+      color: #000;
     }
 
     .schedule-link {
@@ -118,8 +127,8 @@
     <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
-  <div id="status">Paused</div>
-  <div id="liveTag" class="offline">Offline</div>
+  <div id="status"></div>
+  <div id="liveTag" class="offline"></div>
 
   <a href="schedule.html" class="schedule-link">Schedule</a>
 
@@ -138,6 +147,11 @@
     const statusText = document.getElementById('status');
     const liveTag = document.getElementById('liveTag');
     let playing = false;
+    let isLive = false;
+
+    // start empty
+    statusText.textContent = '';
+    liveTag.textContent = '';
 
     audio.src = STREAM_URL;
 
@@ -152,37 +166,43 @@
       playBtn.style.transform = 'translateY(0) scale(1)';
     });
 
-    // Toggle Play / Pause
+    // Toggle play/pause logic
     playBtn.addEventListener('click', async () => {
-      if (!playing) {
-        statusText.textContent = 'Connecting...';
-        liveTag.textContent = 'Connecting';
-        liveTag.className = '';
-        try {
-          await audio.play();
-          playing = true;
-          playBtn.style.background = '#d6d6d2';
-          iconPlay.style.display = 'none';
-          iconPause.style.display = 'block';
-          statusText.textContent = 'Live Now';
-          liveTag.textContent = 'Live Now';
-          liveTag.className = 'live';
-        } catch (e) {
-          playing = false;
-          playBtn.style.background = '#000';
-          iconPlay.style.display = 'block';
-          iconPause.style.display = 'none';
-          statusText.textContent = 'Offline';
-          liveTag.textContent = 'Offline';
-          liveTag.className = 'offline';
-        }
-      } else {
+      // If currently playing
+      if (playing) {
         audio.pause();
         playing = false;
         playBtn.style.background = '#000';
         iconPlay.style.display = 'block';
         iconPause.style.display = 'none';
         statusText.textContent = 'Paused';
+        liveTag.textContent = 'Paused';
+        liveTag.className = 'paused';
+        return;
+      }
+
+      // If not playing, try to connect
+      statusText.textContent = 'Connecting...';
+      liveTag.textContent = 'Connecting';
+      liveTag.className = 'paused';
+
+      try {
+        await audio.play();
+        playing = true;
+        isLive = true;
+        playBtn.style.background = '#d6d6d2';
+        iconPlay.style.display = 'none';
+        iconPause.style.display = 'block';
+        statusText.textContent = 'Live Now';
+        liveTag.textContent = 'Live Now';
+        liveTag.className = 'live';
+      } catch (e) {
+        playing = false;
+        isLive = false;
+        playBtn.style.background = '#000';
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+        statusText.textContent = 'Offline';
         liveTag.textContent = 'Offline';
         liveTag.className = 'offline';
       }
@@ -195,15 +215,24 @@
       statusText.textContent = 'Live Now';
       liveTag.textContent = 'Live Now';
       liveTag.className = 'live';
+      playing = true;
+      isLive = true;
     });
 
     audio.addEventListener('pause', () => {
+      if (isLive) {
+        statusText.textContent = 'Paused';
+        liveTag.textContent = 'Paused';
+        liveTag.className = 'paused';
+      } else {
+        statusText.textContent = 'Offline';
+        liveTag.textContent = 'Offline';
+        liveTag.className = 'offline';
+      }
       playBtn.style.background = '#000';
       iconPlay.style.display = 'block';
       iconPause.style.display = 'none';
-      statusText.textContent = 'Paused';
-      liveTag.textContent = 'Offline';
-      liveTag.className = 'offline';
+      playing = false;
     });
   </script>
 </body>
