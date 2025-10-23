@@ -113,39 +113,70 @@
     Streaming live via Icecast + BUTT.
   </footer><audio id="player" crossorigin="anonymous"></audio>
 
-  <script>
-    const STREAM_URL = 'http://92.30.165.19:8000/stream';
-    const audio = document.getElementById('player');
-    const playBtn = document.getElementById('playBtn');
-    let playing = false;
+<script>
+  const STREAM_URL = 'http://92.30.165.19:8000/stream';
+  const audio = document.getElementById('player');
+  const playBtn = document.getElementById('playBtn');
+  let playing = false;
 
-    audio.src = STREAM_URL;
+  // Create status text under the play button
+  const statusText = document.createElement('div');
+  statusText.id = 'status';
+  statusText.style.marginTop = '15px';
+  statusText.style.fontWeight = 'bold';
+  statusText.style.textTransform = 'uppercase';
+  statusText.style.letterSpacing = '0.05em';
+  statusText.style.fontSize = '1.1em';
+  statusText.textContent = 'OFFLINE';
+  document.querySelector('.play-button').after(statusText);
 
-    playBtn.addEventListener('click', async () => {
-      if (!playing) {
-        try {
-          await audio.play();
-          playing = true;
-          playBtn.style.background = '#53c5a3';
-        } catch (e) {
-          alert('Error connecting to stream.');
-          console.error(e);
-        }
-      } else {
-        audio.pause();
+  audio.src = STREAM_URL;
+
+  playBtn.addEventListener('click', async () => {
+    if (!playing) {
+      try {
+        await audio.play();
+        playing = true;
+        playBtn.style.background = '#53c5a3';
+        statusText.textContent = 'LIVE NOW';
+        statusText.style.color = '#53c5a3';
+      } catch (e) {
+        console.error('Stream connection failed:', e);
         playing = false;
         playBtn.style.background = '#000';
+        statusText.textContent = 'OFFLINE';
+        statusText.style.color = '#ff4d4d';
       }
-    });
+    } else {
+      audio.pause();
+      playing = false;
+      playBtn.style.background = '#000';
+      statusText.textContent = 'OFFLINE';
+      statusText.style.color = '#ff4d4d';
+    }
+  });
 
-    // Load schedule.html content dynamically
-    fetch('schedule.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('schedule-content').innerHTML = html;
-      })
-      .catch(() => {
-        document.getElementById('schedule-content').innerText = 'Unable to load schedule.';
-      });
-  </script></body>
-</html>
+  audio.addEventListener('pause', () => {
+    playing = false;
+    playBtn.style.background = '#000';
+    statusText.textContent = 'OFFLINE';
+    statusText.style.color = '#ff4d4d';
+  });
+
+  audio.addEventListener('playing', () => {
+    playing = true;
+    playBtn.style.background = '#53c5a3';
+    statusText.textContent = 'LIVE NOW';
+    statusText.style.color = '#53c5a3';
+  });
+
+  // Load schedule.html content dynamically
+  fetch('schedule.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('schedule-content').innerHTML = html;
+    })
+    .catch(() => {
+      document.getElementById('schedule-content').innerText = 'Unable to load schedule.';
+    });
+</script>
