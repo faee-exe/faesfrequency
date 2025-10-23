@@ -17,11 +17,11 @@
     header {
       background: #d6d6d2;
       color: #000;
-      padding: 60px 0 50px;
+      padding: 80px 0 60px;
     }
 
     header h1 {
-      font-size: 2.8em;
+      font-size: 3.2em;
       margin: 0;
       letter-spacing: 0.05em;
       text-transform: uppercase;
@@ -30,50 +30,59 @@
     .play-button {
       background: #000;
       border-radius: 50%;
-      width: 100px;
-      height: 100px;
+      width: 130px;
+      height: 130px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 60px auto 15px;
+      margin: 80px auto 25px;
       cursor: pointer;
       transition: transform 0.1s ease, background 0.2s ease;
       user-select: none;
     }
 
     .play-button:active {
-      transform: translateY(3px) scale(0.96);
+      transform: translateY(4px) scale(0.96);
     }
 
     .play-button svg {
-      width: 40px;
-      height: 40px;
+      width: 50px;
+      height: 50px;
       fill: #fff;
       transition: fill 0.2s ease;
     }
 
     #status {
-      margin: 15px 0 5px;
+      display: none;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    #liveTag, .schedule-link {
+      display: inline-block;
+      padding: 12px 26px;
+      font-size: 1em;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      font-size: 1em;
-      color: #000;
-      min-height: 20px;
+      border: 2px solid #000;
+      transition: background 0.2s ease, color 0.2s ease;
+      line-height: 1;
+      height: 44px;
     }
 
     #liveTag {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 4px;
-      font-size: 0.85em;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 20px;
-      min-width: 80px;
+      border: none;
+      border-radius: 6px;
       background: #999;
       color: #fff;
+      min-width: 100px;
     }
 
     .live {
@@ -92,14 +101,9 @@
     }
 
     .schedule-link {
-      display: inline-block;
-      padding: 10px 20px;
-      border: 2px solid #000;
-      text-decoration: none;
       color: #000;
-      font-weight: bold;
-      margin-bottom: 40px;
-      transition: background 0.2s ease;
+      text-decoration: none;
+      background: transparent;
     }
 
     .schedule-link:hover {
@@ -108,10 +112,10 @@
     }
 
     footer {
-      margin-top: 60px;
-      font-size: 0.85em;
+      margin-top: 100px;
+      font-size: 0.9em;
       color: #555;
-      padding-bottom: 20px;
+      padding-bottom: 30px;
     }
 
     audio { display: none; }
@@ -127,10 +131,10 @@
     <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
-  <div id="status"></div>
-  <div id="liveTag" class="offline"></div>
-
-  <a href="schedule.html" class="schedule-link">Schedule</a>
+  <div class="controls">
+    <div id="liveTag" class="offline"></div>
+    <a href="schedule.html" class="schedule-link">Schedule</a>
+  </div>
 
   <footer>
     Streaming live via Icecast + BUTT.
@@ -144,20 +148,18 @@
     const playBtn = document.getElementById('playBtn');
     const iconPlay = document.getElementById('iconPlay');
     const iconPause = document.getElementById('iconPause');
-    const statusText = document.getElementById('status');
     const liveTag = document.getElementById('liveTag');
     let playing = false;
     let isLive = false;
 
-    // start empty
-    statusText.textContent = '';
+    // Start with empty tag
     liveTag.textContent = '';
 
     audio.src = STREAM_URL;
 
     // Click animation
     playBtn.addEventListener('mousedown', () => {
-      playBtn.style.transform = 'translateY(3px) scale(0.96)';
+      playBtn.style.transform = 'translateY(4px) scale(0.96)';
     });
     playBtn.addEventListener('mouseup', () => {
       playBtn.style.transform = 'translateY(0) scale(1)';
@@ -166,23 +168,19 @@
       playBtn.style.transform = 'translateY(0) scale(1)';
     });
 
-    // Toggle play/pause logic
+    // Play / Pause logic
     playBtn.addEventListener('click', async () => {
-      // If currently playing
       if (playing) {
         audio.pause();
         playing = false;
         playBtn.style.background = '#000';
         iconPlay.style.display = 'block';
         iconPause.style.display = 'none';
-        statusText.textContent = 'Paused';
         liveTag.textContent = 'Paused';
         liveTag.className = 'paused';
         return;
       }
 
-      // If not playing, try to connect
-      statusText.textContent = 'Connecting...';
       liveTag.textContent = 'Connecting';
       liveTag.className = 'paused';
 
@@ -193,7 +191,6 @@
         playBtn.style.background = '#d6d6d2';
         iconPlay.style.display = 'none';
         iconPause.style.display = 'block';
-        statusText.textContent = 'Live Now';
         liveTag.textContent = 'Live Now';
         liveTag.className = 'live';
       } catch (e) {
@@ -202,30 +199,16 @@
         playBtn.style.background = '#000';
         iconPlay.style.display = 'block';
         iconPause.style.display = 'none';
-        statusText.textContent = 'Offline';
         liveTag.textContent = 'Offline';
         liveTag.className = 'offline';
       }
     });
 
-    audio.addEventListener('playing', () => {
-      playBtn.style.background = '#d6d6d2';
-      iconPlay.style.display = 'none';
-      iconPause.style.display = 'block';
-      statusText.textContent = 'Live Now';
-      liveTag.textContent = 'Live Now';
-      liveTag.className = 'live';
-      playing = true;
-      isLive = true;
-    });
-
     audio.addEventListener('pause', () => {
       if (isLive) {
-        statusText.textContent = 'Paused';
         liveTag.textContent = 'Paused';
         liveTag.className = 'paused';
       } else {
-        statusText.textContent = 'Offline';
         liveTag.textContent = 'Offline';
         liveTag.className = 'offline';
       }
