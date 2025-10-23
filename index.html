@@ -37,15 +37,12 @@
       justify-content: center;
       margin: 60px auto 15px;
       cursor: pointer;
-      transition: transform 0.15s ease, background 0.2s ease;
-    }
-
-    .play-button:hover {
-      transform: scale(1.07);
+      transition: transform 0.1s ease, background 0.2s ease;
+      user-select: none;
     }
 
     .play-button:active {
-      transform: scale(0.95);
+      transform: translateY(3px) scale(0.96);
     }
 
     .play-button svg {
@@ -56,12 +53,33 @@
     }
 
     #status {
-      margin: 10px 0 20px;
+      margin: 15px 0 5px;
       font-weight: bold;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       font-size: 1em;
       color: #000;
+    }
+
+    #liveTag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+
+    .live {
+      background: #ff4747;
+      color: #fff;
+    }
+
+    .offline {
+      background: #999;
+      color: #fff;
     }
 
     .schedule-link {
@@ -100,7 +118,8 @@
     <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
-  <div id="status">Offline</div>
+  <div id="status">Paused</div>
+  <div id="liveTag" class="offline">Offline</div>
 
   <a href="schedule.html" class="schedule-link">Schedule</a>
 
@@ -117,12 +136,28 @@
     const iconPlay = document.getElementById('iconPlay');
     const iconPause = document.getElementById('iconPause');
     const statusText = document.getElementById('status');
+    const liveTag = document.getElementById('liveTag');
     let playing = false;
 
     audio.src = STREAM_URL;
 
+    // Click animation
+    playBtn.addEventListener('mousedown', () => {
+      playBtn.style.transform = 'translateY(3px) scale(0.96)';
+    });
+    playBtn.addEventListener('mouseup', () => {
+      playBtn.style.transform = 'translateY(0) scale(1)';
+    });
+    playBtn.addEventListener('mouseleave', () => {
+      playBtn.style.transform = 'translateY(0) scale(1)';
+    });
+
+    // Toggle Play / Pause
     playBtn.addEventListener('click', async () => {
       if (!playing) {
+        statusText.textContent = 'Connecting...';
+        liveTag.textContent = 'Connecting';
+        liveTag.className = '';
         try {
           await audio.play();
           playing = true;
@@ -130,10 +165,16 @@
           iconPlay.style.display = 'none';
           iconPause.style.display = 'block';
           statusText.textContent = 'Live Now';
+          liveTag.textContent = 'Live Now';
+          liveTag.className = 'live';
         } catch (e) {
           playing = false;
           playBtn.style.background = '#000';
+          iconPlay.style.display = 'block';
+          iconPause.style.display = 'none';
           statusText.textContent = 'Offline';
+          liveTag.textContent = 'Offline';
+          liveTag.className = 'offline';
         }
       } else {
         audio.pause();
@@ -141,15 +182,28 @@
         playBtn.style.background = '#000';
         iconPlay.style.display = 'block';
         iconPause.style.display = 'none';
-        statusText.textContent = 'Offline';
+        statusText.textContent = 'Paused';
+        liveTag.textContent = 'Offline';
+        liveTag.className = 'offline';
       }
+    });
+
+    audio.addEventListener('playing', () => {
+      playBtn.style.background = '#d6d6d2';
+      iconPlay.style.display = 'none';
+      iconPause.style.display = 'block';
+      statusText.textContent = 'Live Now';
+      liveTag.textContent = 'Live Now';
+      liveTag.className = 'live';
     });
 
     audio.addEventListener('pause', () => {
       playBtn.style.background = '#000';
       iconPlay.style.display = 'block';
       iconPause.style.display = 'none';
-      statusText.textContent = 'Offline';
+      statusText.textContent = 'Paused';
+      liveTag.textContent = 'Offline';
+      liveTag.className = 'offline';
     });
   </script>
 </body>
