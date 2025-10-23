@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -11,50 +10,60 @@
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
-      background: #f5f7f4;
-      color: #000;
+      background: #0d0d0f; /* dark charcoal */
+      color: #e8f5e9; /* soft white */
       text-align: center;
     }
+
     header {
-      background: #a0a0a0;
-      color: white;
-      padding: 60px 0 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(180deg, #1f1f22, #0d0d0f);
+      color: #00ff99;
+      padding: 70px 0 60px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     }
+
     header h1 {
-      font-size: 3.4em;
-      letter-spacing: 0.06em;
+      font-size: 3.6em;
+      letter-spacing: 0.08em;
       margin: 0;
-      line-height: 1;
-      text-align: center;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(0, 255, 153, 0.8);
     }
+
     .play-button {
-      background: #000;
+      background: #1a1a1d;
       border-radius: 50%;
-      width: 110px;
-      height: 110px;
+      width: 130px;
+      height: 130px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 50px auto 25px;
+      margin: 60px auto 20px;
       cursor: pointer;
-      transition: transform 0.25s ease, background 0.3s ease;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 25px rgba(0, 255, 153, 0.15);
     }
+
     .play-button:hover {
-      transform: scale(1.06);
-      background: #53c5a3;
+      transform: scale(1.07);
+      background: #00ff99;
+      box-shadow: 0 0 25px rgba(0, 255, 153, 0.5);
     }
+
     .play-button svg {
-      width: 42px;
-      height: 42px;
-      fill: white;
+      width: 50px;
+      height: 50px;
+      fill: #fff;
+      transition: fill 0.3s ease;
     }
+
+    .play-button:hover svg {
+      fill: #000;
+    }
+
     .schedule {
-      background: #000;
-      color: white;
+      background: #00ff99;
+      color: #000;
       display: inline-block;
       padding: 14px 26px;
       font-weight: bold;
@@ -62,39 +71,61 @@
       text-transform: uppercase;
       text-decoration: none;
       margin-bottom: 30px;
-      transition: background 0.3s ease;
+      border-radius: 6px;
+      transition: background 0.3s ease, color 0.3s ease;
+      box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
     }
+
     .schedule:hover {
-      background: #53c5a3;
+      background: #0d0d0f;
+      color: #00ff99;
+      box-shadow: 0 0 20px rgba(0, 255, 153, 0.6);
     }
+
     #schedule-content {
       margin-top: 40px;
       display: inline-block;
-      background: #53c5a3;
-      color: #fff;
-      padding: 12px 20px;
-      border-radius: 6px;
+      background: #1a1a1d;
+      color: #00ff99;
+      padding: 16px 24px;
+      border-radius: 8px;
       font-weight: bold;
-      font-size: 1.1em;
+      font-size: 1.2em;
       line-height: 1.6em;
-      min-width: 260px;
+      min-width: 280px;
+      box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
     }
-    .show-info {
+
+    #status {
       margin-top: 25px;
+      font-weight: bold;
+      font-size: 1.3em;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 10px rgba(0, 255, 153, 0.8);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .show-info {
+      margin-top: 35px;
       font-size: 1.25em;
       font-weight: bold;
-      background: #000;
-      color: #fff;
+      background: #1a1a1d;
+      color: #00ff99;
       display: inline-block;
-      padding: 10px 20px;
-      border-radius: 6px;
-      letter-spacing: 0.02em;
+      padding: 12px 24px;
+      border-radius: 8px;
+      letter-spacing: 0.04em;
+      box-shadow: 0 0 20px rgba(0, 255, 153, 0.3);
     }
+
     footer {
-      margin-top: 60px;
+      margin-top: 70px;
       font-size: 0.9em;
-      color: #333;
+      color: #777;
+      padding-bottom: 40px;
     }
+
     audio {
       display: none;
     }
@@ -103,80 +134,89 @@
 <body>
   <header>
     <h1>faesTASTE RADIO</h1>
-  </header>  <div class="play-button" id="playBtn">
+  </header>
+
+  <div class="play-button" id="playBtn">
     <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-  </div><a href="schedule.html" class="schedule" target="_blank">SCHEDULE</a>
+  </div>
 
-  <div id="schedule-content">Loading schedule...</div>  <div class="show-info">
+  <div id="status">OFFLINE</div>
+
+  <a href="schedule.html" class="schedule" target="_blank">SCHEDULE</a>
+
+  <div id="schedule-content">Loading schedule...</div>
+
+  <div class="show-info">
     Live w/ faesTASTE
-  </div>  <footer>
-    Streaming live via Icecast + BUTT.
-  </footer><audio id="player" crossorigin="anonymous"></audio>
+  </div>
 
-<script>
-  const STREAM_URL = 'http://92.30.165.19:8000/stream';
-  const audio = document.getElementById('player');
-  const playBtn = document.getElementById('playBtn');
-  let playing = false;
+  <footer>
+    Streaming live via Icecast + BUTT — faesTASTE digital radio experience.
+  </footer>
 
-  // Create status text under the play button
-  const statusText = document.createElement('div');
-  statusText.id = 'status';
-  statusText.style.marginTop = '15px';
-  statusText.style.fontWeight = 'bold';
-  statusText.style.textTransform = 'uppercase';
-  statusText.style.letterSpacing = '0.05em';
-  statusText.style.fontSize = '1.1em';
-  statusText.textContent = 'OFFLINE';
-  document.querySelector('.play-button').after(statusText);
+  <audio id="player" crossorigin="anonymous"></audio>
 
-  audio.src = STREAM_URL;
+  <script>
+    const STREAM_URL = 'http://92.30.165.19:8000/stream';
+    const audio = document.getElementById('player');
+    const playBtn = document.getElementById('playBtn');
+    const statusText = document.getElementById('status');
+    let playing = false;
 
-  playBtn.addEventListener('click', async () => {
-    if (!playing) {
-      try {
-        await audio.play();
-        playing = true;
-        playBtn.style.background = '#53c5a3';
-        statusText.textContent = 'LIVE NOW';
-        statusText.style.color = '#53c5a3';
-      } catch (e) {
-        console.error('Stream connection failed:', e);
+    audio.src = STREAM_URL;
+
+    playBtn.addEventListener('click', async () => {
+      if (!playing) {
+        try {
+          await audio.play();
+          playing = true;
+          playBtn.style.background = '#00ff99';
+          statusText.textContent = 'LIVE NOW';
+          statusText.style.color = '#00ff99';
+          statusText.style.textShadow = '0 0 20px rgba(0,255,153,0.8)';
+        } catch (e) {
+          console.error('Stream connection failed:', e);
+          playing = false;
+          playBtn.style.background = '#1a1a1d';
+          statusText.textContent = 'OFFLINE';
+          statusText.style.color = '#ff4d4d';
+          statusText.style.textShadow = '0 0 15px rgba(255,77,77,0.8)';
+        }
+      } else {
+        audio.pause();
         playing = false;
-        playBtn.style.background = '#000';
+        playBtn.style.background = '#1a1a1d';
         statusText.textContent = 'OFFLINE';
         statusText.style.color = '#ff4d4d';
+        statusText.style.textShadow = '0 0 15px rgba(255,77,77,0.8)';
       }
-    } else {
-      audio.pause();
+    });
+
+    audio.addEventListener('pause', () => {
       playing = false;
-      playBtn.style.background = '#000';
+      playBtn.style.background = '#1a1a1d';
       statusText.textContent = 'OFFLINE';
       statusText.style.color = '#ff4d4d';
-    }
-  });
-
-  audio.addEventListener('pause', () => {
-    playing = false;
-    playBtn.style.background = '#000';
-    statusText.textContent = 'OFFLINE';
-    statusText.style.color = '#ff4d4d';
-  });
-
-  audio.addEventListener('playing', () => {
-    playing = true;
-    playBtn.style.background = '#53c5a3';
-    statusText.textContent = 'LIVE NOW';
-    statusText.style.color = '#53c5a3';
-  });
-
-  // Load schedule.html content dynamically
-  fetch('schedule.html')
-    .then(res => res.text())
-    .then(html => {
-      document.getElementById('schedule-content').innerHTML = html;
-    })
-    .catch(() => {
-      document.getElementById('schedule-content').innerText = 'Unable to load schedule.';
+      statusText.style.textShadow = '0 0 15px rgba(255,77,77,0.8)';
     });
-</script>
+
+    audio.addEventListener('playing', () => {
+      playing = true;
+      playBtn.style.background = '#00ff99';
+      statusText.textContent = 'LIVE NOW';
+      statusText.style.color = '#00ff99';
+      statusText.style.textShadow = '0 0 20px rgba(0,255,153,0.8)';
+    });
+
+    // Load schedule.html dynamically
+    fetch('schedule.html')
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById('schedule-content').innerHTML = html;
+      })
+      .catch(() => {
+        document.getElementById('schedule-content').innerText = 'Unable to load schedule.';
+      });
+  </script>
+</body>
+</html>
