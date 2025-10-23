@@ -9,50 +9,67 @@
     body {
       margin: 0;
       font-family: 'Courier New', monospace;
-      background: #000;
-      color: #fff;
+      background: #0d0d0f;
+      color: #e8f5e9;
       text-align: center;
       padding: 60px 20px;
     }
     h1 {
-      color: #53c5a3;
-      font-size: 2.5em;
-      margin-bottom: 20px;
+      color: #00ff99;
+      font-size: 2.8em;
+      margin-bottom: 30px;
+      text-shadow: 0 0 20px rgba(0, 255, 153, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
     .show {
-      background: #1a1a1a;
+      background: #1a1a1d;
       border-radius: 8px;
-      margin: 10px auto;
-      padding: 15px 20px;
+      margin: 14px auto;
+      padding: 18px 24px;
       max-width: 600px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      box-shadow: 0 0 25px rgba(0, 255, 153, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .show:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 35px rgba(0, 255, 153, 0.4);
     }
     .show time {
-      color: #53c5a3;
+      color: #00ff99;
       font-weight: bold;
+      font-size: 1.1em;
+      letter-spacing: 0.05em;
     }
     .show h2 {
-      margin: 6px 0 4px;
-      font-size: 1.3em;
+      margin: 8px 0 6px;
+      font-size: 1.4em;
+      color: #fff;
+      text-transform: uppercase;
     }
     .show p {
       margin: 0;
-      font-size: 0.95em;
+      font-size: 1em;
       color: #ccc;
     }
     a.back {
       display: inline-block;
-      margin-top: 40px;
+      margin-top: 50px;
       text-decoration: none;
-      color: #53c5a3;
-      border: 2px solid #53c5a3;
-      padding: 8px 16px;
-      border-radius: 6px;
+      color: #0d0d0f;
+      background: #00ff99;
+      border: 2px solid #00ff99;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-weight: bold;
+      letter-spacing: 0.05em;
       transition: 0.3s;
+      box-shadow: 0 0 20px rgba(0,255,153,0.3);
     }
     a.back:hover {
-      background: #53c5a3;
-      color: #000;
+      background: #0d0d0f;
+      color: #00ff99;
+      box-shadow: 0 0 30px rgba(0,255,153,0.6);
     }
   </style>
 </head>
@@ -68,7 +85,7 @@
   </div>  <div class="show">
     <time>Fri 9PM</time>
     <h2>faesTASTE Live</h2>
-    <p>Live mix direct from studio — join the wave.</p>
+    <p>Live mix direct from the studio — join the wave.</p>
   </div><a class="back" href="index.html">← Back to Radio</a>
 
 </body>
