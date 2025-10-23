@@ -5,130 +5,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>faesTASTE Radio</title>
   <meta name="description" content="Live faesTASTE digital radio stream">
-  <link rel="preconnect" href="http://92.30.165.19:8000">
   <style>
     body {
       margin: 0;
-      font-family: 'Courier New', monospace;
-      background: #0d0d0f; /* dark charcoal */
-      color: #e8f5e9; /* soft white */
+      font-family: monospace;
+      background: #f7f7f5;
+      color: #000;
       text-align: center;
     }
 
     header {
-      background: linear-gradient(180deg, #1f1f22, #0d0d0f);
-      color: #00ff99;
-      padding: 70px 0 60px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+      background: #d6d6d2;
+      color: #000;
+      padding: 60px 0 50px;
     }
 
     header h1 {
-      font-size: 3.6em;
-      letter-spacing: 0.08em;
+      font-size: 2.8em;
       margin: 0;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
-      text-shadow: 0 0 20px rgba(0, 255, 153, 0.8);
     }
 
     .play-button {
-      background: #1a1a1d;
+      background: #000;
       border-radius: 50%;
-      width: 130px;
-      height: 130px;
+      width: 100px;
+      height: 100px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 60px auto 20px;
+      margin: 60px auto 15px;
       cursor: pointer;
-      transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 0 25px rgba(0, 255, 153, 0.15);
+      transition: transform 0.15s ease, background 0.2s ease;
     }
 
     .play-button:hover {
       transform: scale(1.07);
-      background: #00ff99;
-      box-shadow: 0 0 25px rgba(0, 255, 153, 0.5);
+    }
+
+    .play-button:active {
+      transform: scale(0.95);
     }
 
     .play-button svg {
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
       fill: #fff;
-      transition: fill 0.3s ease;
-    }
-
-    .play-button:hover svg {
-      fill: #000;
-    }
-
-    .schedule {
-      background: #00ff99;
-      color: #000;
-      display: inline-block;
-      padding: 14px 26px;
-      font-weight: bold;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      text-decoration: none;
-      margin-bottom: 30px;
-      border-radius: 6px;
-      transition: background 0.3s ease, color 0.3s ease;
-      box-shadow: 0 0 15px rgba(0, 255, 153, 0.3);
-    }
-
-    .schedule:hover {
-      background: #0d0d0f;
-      color: #00ff99;
-      box-shadow: 0 0 20px rgba(0, 255, 153, 0.6);
-    }
-
-    #schedule-content {
-      margin-top: 40px;
-      display: inline-block;
-      background: #1a1a1d;
-      color: #00ff99;
-      padding: 16px 24px;
-      border-radius: 8px;
-      font-weight: bold;
-      font-size: 1.2em;
-      line-height: 1.6em;
-      min-width: 280px;
-      box-shadow: 0 0 20px rgba(0, 255, 153, 0.2);
+      transition: fill 0.2s ease;
     }
 
     #status {
-      margin-top: 25px;
+      margin: 10px 0 20px;
       font-weight: bold;
-      font-size: 1.3em;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-      text-shadow: 0 0 10px rgba(0, 255, 153, 0.8);
-      transition: color 0.3s ease, text-shadow 0.3s ease;
+      letter-spacing: 0.05em;
+      font-size: 1em;
+      color: #000;
     }
 
-    .show-info {
-      margin-top: 35px;
-      font-size: 1.25em;
-      font-weight: bold;
-      background: #1a1a1d;
-      color: #00ff99;
+    .schedule-link {
       display: inline-block;
-      padding: 12px 24px;
-      border-radius: 8px;
-      letter-spacing: 0.04em;
-      box-shadow: 0 0 20px rgba(0, 255, 153, 0.3);
+      padding: 10px 20px;
+      border: 2px solid #000;
+      text-decoration: none;
+      color: #000;
+      font-weight: bold;
+      margin-bottom: 40px;
+      transition: background 0.2s ease;
+    }
+
+    .schedule-link:hover {
+      background: #000;
+      color: #fff;
     }
 
     footer {
-      margin-top: 70px;
-      font-size: 0.9em;
-      color: #777;
-      padding-bottom: 40px;
+      margin-top: 60px;
+      font-size: 0.85em;
+      color: #555;
+      padding-bottom: 20px;
     }
 
-    audio {
-      display: none;
-    }
+    audio { display: none; }
   </style>
 </head>
 <body>
@@ -137,21 +96,16 @@
   </header>
 
   <div class="play-button" id="playBtn">
-    <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
-  <div id="status">OFFLINE</div>
+  <div id="status">Offline</div>
 
-  <a href="schedule.html" class="schedule" target="_blank">SCHEDULE</a>
-
-  <div id="schedule-content">Loading schedule...</div>
-
-  <div class="show-info">
-    Live w/ faesTASTE
-  </div>
+  <a href="schedule.html" class="schedule-link">Schedule</a>
 
   <footer>
-    Streaming live via Icecast + BUTT — faesTASTE digital radio experience.
+    Streaming live via Icecast + BUTT.
   </footer>
 
   <audio id="player" crossorigin="anonymous"></audio>
@@ -160,6 +114,8 @@
     const STREAM_URL = 'http://92.30.165.19:8000/stream';
     const audio = document.getElementById('player');
     const playBtn = document.getElementById('playBtn');
+    const iconPlay = document.getElementById('iconPlay');
+    const iconPause = document.getElementById('iconPause');
     const statusText = document.getElementById('status');
     let playing = false;
 
@@ -170,53 +126,31 @@
         try {
           await audio.play();
           playing = true;
-          playBtn.style.background = '#00ff99';
-          statusText.textContent = 'LIVE NOW';
-          statusText.style.color = '#00ff99';
-          statusText.style.textShadow = '0 0 20px rgba(0,255,153,0.8)';
+          playBtn.style.background = '#d6d6d2';
+          iconPlay.style.display = 'none';
+          iconPause.style.display = 'block';
+          statusText.textContent = 'Live Now';
         } catch (e) {
-          console.error('Stream connection failed:', e);
           playing = false;
-          playBtn.style.background = '#1a1a1d';
-          statusText.textContent = 'OFFLINE';
-          statusText.style.color = '#ff4d4d';
-          statusText.style.textShadow = '0 0 15px rgba(255,77,77,0.8)';
+          playBtn.style.background = '#000';
+          statusText.textContent = 'Offline';
         }
       } else {
         audio.pause();
         playing = false;
-        playBtn.style.background = '#1a1a1d';
-        statusText.textContent = 'OFFLINE';
-        statusText.style.color = '#ff4d4d';
-        statusText.style.textShadow = '0 0 15px rgba(255,77,77,0.8)';
+        playBtn.style.background = '#000';
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+        statusText.textContent = 'Offline';
       }
     });
 
     audio.addEventListener('pause', () => {
-      playing = false;
-      playBtn.style.background = '#1a1a1d';
-      statusText.textContent = 'OFFLINE';
-      statusText.style.color = '#ff4d4d';
-      statusText.style.textShadow = '0 0 15px rgba(255,77,77,0.8)';
+      playBtn.style.background = '#000';
+      iconPlay.style.display = 'block';
+      iconPause.style.display = 'none';
+      statusText.textContent = 'Offline';
     });
-
-    audio.addEventListener('playing', () => {
-      playing = true;
-      playBtn.style.background = '#00ff99';
-      statusText.textContent = 'LIVE NOW';
-      statusText.style.color = '#00ff99';
-      statusText.style.textShadow = '0 0 20px rgba(0,255,153,0.8)';
-    });
-
-    // Load schedule.html dynamically
-    fetch('schedule.html')
-      .then(res => res.text())
-      .then(html => {
-        document.getElementById('schedule-content').innerHTML = html;
-      })
-      .catch(() => {
-        document.getElementById('schedule-content').innerText = 'Unable to load schedule.';
-      });
   </script>
 </body>
 </html>
