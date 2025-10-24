@@ -1,92 +1,197 @@
 <!doctype html>
-
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>faesTASTE Schedule</title>
+  <title>faesTASTE Radio — Schedule</title>
+  <meta name="description" content="faesTASTE Radio weekly show schedule">
   <style>
     body {
       margin: 0;
-      font-family: 'Courier New', monospace;
-      background: #0d0d0f;
-      color: #e8f5e9;
+      font-family: monospace;
+      background: #f7f7f5;
+      color: #000;
       text-align: center;
-      padding: 60px 20px;
     }
+
+    header {
+      background: #d6d6d2;
+      padding: 50px 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    header img {
+      width: min(45vw, 420px);
+      height: auto;
+      max-width: 90%;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
+
+    header img:hover {
+      transform: scale(1.03);
+    }
+
+    .content {
+      max-width: 800px;
+      margin: 80px auto 60px;
+      padding: 0 20px;
+      text-align: left;
+    }
+
     h1 {
-      color: #00ff99;
-      font-size: 2.8em;
-      margin-bottom: 30px;
-      text-shadow: 0 0 20px rgba(0, 255, 153, 0.8);
+      text-align: center;
+      font-size: 1.8em;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-    .show {
-      background: #1a1a1d;
-      border-radius: 8px;
-      margin: 14px auto;
-      padding: 18px 24px;
-      max-width: 600px;
-      box-shadow: 0 0 25px rgba(0, 255, 153, 0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .show:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 35px rgba(0, 255, 153, 0.4);
-    }
-    .show time {
-      color: #00ff99;
-      font-weight: bold;
-      font-size: 1.1em;
       letter-spacing: 0.05em;
+      margin-bottom: 40px;
     }
-    .show h2 {
-      margin: 8px 0 6px;
-      font-size: 1.4em;
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 2px solid #d6d6d2;
+    }
+
+    th {
+      background: #000;
       color: #fff;
       text-transform: uppercase;
-    }
-    .show p {
-      margin: 0;
-      font-size: 1em;
-      color: #ccc;
-    }
-    a.back {
-      display: inline-block;
-      margin-top: 50px;
-      text-decoration: none;
-      color: #0d0d0f;
-      background: #00ff99;
-      border: 2px solid #00ff99;
-      padding: 10px 22px;
-      border-radius: 8px;
-      font-weight: bold;
       letter-spacing: 0.05em;
-      transition: 0.3s;
-      box-shadow: 0 0 20px rgba(0,255,153,0.3);
+      font-size: 0.9em;
     }
-    a.back:hover {
-      background: #0d0d0f;
-      color: #00ff99;
-      box-shadow: 0 0 30px rgba(0,255,153,0.6);
+
+    tr:hover td {
+      background: #eee;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-top: 60px;
+      flex-wrap: wrap;
+    }
+
+    .schedule-link,
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      width: 150px;
+      font-size: 0.9em;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 2px solid #000;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .schedule-link {
+      background: #000;
+      color: #fff;
+    }
+
+    .schedule-link:hover {
+      background: #333;
+    }
+
+    .home-link {
+      color: #000;
+      background: transparent;
+    }
+
+    .home-link:hover {
+      background: #000;
+      color: #fff;
+    }
+
+    footer {
+      margin-top: 100px;
+      font-size: 0.9em;
+      color: #555;
+      padding-bottom: 30px;
+    }
+
+    @media (max-width: 600px) {
+      header img {
+        width: 70vw;
+      }
+
+      .content {
+        margin: 60px auto 40px;
+      }
+
+      .controls {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .schedule-link,
+      .home-link {
+        width: 130px;
+      }
+
+      table th, table td {
+        font-size: 0.9em;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>faesTASTE Weekly Schedule</h1>  <div class="show">
-    <time>Mon 8PM</time>
-    <h2>Midnight Flow</h2>
-    <p>Hosted by DJ Faes — ambient & lo-fi explorations.</p>
-  </div>  <div class="show">
-    <time>Wed 7PM</time>
-    <h2>Neon Vibes</h2>
-    <p>Electronic sets and experimental soundscapes.</p>
-  </div>  <div class="show">
-    <time>Fri 9PM</time>
-    <h2>faesTASTE Live</h2>
-    <p>Live mix direct from the studio — join the wave.</p>
-  </div><a class="back" href="index.html">← Back to Radio</a>
+  <header>
+    <img src="logo.png" alt="faesTASTE Radio logo">
+  </header>
 
+  <div class="content">
+    <h1>Broadcast Schedule</h1>
+    <table>
+      <tr>
+        <th>Day</th>
+        <th>Show</th>
+        <th>Time (UTC)</th>
+      </tr>
+      <tr>
+        <td>Monday</td>
+        <td>Morning Mix — Hosted by Juno</td>
+        <td>10:00 – 12:00</td>
+      </tr>
+      <tr>
+        <td>Wednesday</td>
+        <td>Chill Frequencies — Hosted by Alex</td>
+        <td>18:00 – 20:00</td>
+      </tr>
+      <tr>
+        <td>Friday</td>
+        <td>faesTASTE Live Sessions</td>
+        <td>22:00 – 00:00</td>
+      </tr>
+      <tr>
+        <td>Sunday</td>
+        <td>Ambient Flow — Curated by Mira</td>
+        <td>08:00 – 10:00</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="controls">
+    <a href="index.html" class="home-link">Home</a>
+    <a href="schedule.html" class="schedule-link">Schedule</a>
+  </div>
+
+  <footer>
+    Streaming live via Icecast + BUTT.
+  </footer>
 </body>
 </html>
