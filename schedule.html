@@ -14,22 +14,28 @@
       text-align: center;
     }
 
+    /* --- Match index.html header --- */
     header {
       background: #d6d6d2;
-      padding: 60px 0 50px;
+      height: 220px;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden; /* prevents grey box from expanding */
     }
 
-    /* Bigger logo image inside same box */
     header img {
-      width: min(75vw, 650px);
+      width: min(60vw, 550px);
       height: auto;
-      max-width: 100%;
       object-fit: contain;
+      transition: transform 0.3s ease;
     }
 
+    header img:hover {
+      transform: scale(1.03);
+    }
+
+    /* --- Main content --- */
     .content {
       max-width: 800px;
       margin: 80px auto 60px;
@@ -68,6 +74,7 @@
       background: #eee;
     }
 
+    /* --- Bottom buttons --- */
     .controls {
       display: flex;
       justify-content: center;
@@ -120,9 +127,14 @@
       padding-bottom: 30px;
     }
 
+    /* --- Responsive --- */
     @media (max-width: 600px) {
+      header {
+        height: 160px;
+      }
+
       header img {
-        width: 85vw;
+        width: 75vw;
       }
 
       .content {
