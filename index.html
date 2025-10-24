@@ -16,16 +16,19 @@
 
     header {
       background: #d6d6d2;
-      padding: 60px 0 50px;
+      padding: 50px 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    /* ✅ Responsive logo scaling */
     header img {
-      height: 100px;
-      width: auto;
-      max-width: 80%;
+      width: 40vw;          /* scales dynamically with screen size */
+      max-width: 400px;     /* prevents getting too large */
+      min-width: 160px;     /* keeps readable on phones */
+      height: auto;         /* keeps correct proportions */
+      object-fit: contain;
     }
 
     .play-button {
@@ -58,6 +61,7 @@
       align-items: center;
       gap: 14px;
       margin-top: 20px;
+      flex-wrap: wrap;
     }
 
     #liveTag,
@@ -118,6 +122,17 @@
 
     audio {
       display: none;
+    }
+
+    @media (max-width: 600px) {
+      .play-button {
+        width: 110px;
+        height: 110px;
+      }
+      .play-button svg {
+        width: 42px;
+        height: 42px;
+      }
     }
   </style>
 </head>
