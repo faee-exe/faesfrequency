@@ -29,25 +29,16 @@
     /* --- HEADER --- */
     header {
       background: #d6d6d2;
+      height: 220px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 50px 0;
+      justify-content: center;
       overflow: hidden;
     }
 
-    .logo-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      max-width: 800px;
-    }
-
     .site-logo {
-      width: 100%;
+      width: min(55vw, 480px);
       height: auto;
-      max-width: 620px; /* 🔥 bigger logo */
       object-fit: contain;
       transition: transform 0.3s ease;
     }
@@ -177,22 +168,13 @@
       display: none;
     }
 
-    /* --- RESPONSIVE LOGO --- */
-    @media (max-width: 1024px) {
-      .site-logo {
-        max-width: 500px;
+    @media (max-width: 600px) {
+      header {
+        height: 160px;
       }
-    }
 
-    @media (max-width: 768px) {
       .site-logo {
-        max-width: 400px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .site-logo {
-        max-width: 80vw;
+        width: 75vw;
       }
 
       .play-button {
@@ -219,9 +201,7 @@
 <body>
   <!-- HEADER -->
   <header>
-    <div class="logo-container">
-      <img src="logo.png" alt="faesFrequency logo" class="site-logo">
-    </div>
+    <img src="logo.png" alt="faesFrequency logo" class="site-logo">
   </header>
 
   <!-- PLAY BUTTON -->
