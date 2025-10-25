@@ -10,7 +10,7 @@
   <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="favicon.png">
 
-  <!-- 📡 Open Graph (for link previews) -->
+  <!-- 📡 Open Graph -->
   <meta property="og:title" content="faesFrequency">
   <meta property="og:description" content="transmitting sound through the static">
   <meta property="og:image" content="https://faee-exe.github.io/faestaste/logo.png">
@@ -105,20 +105,9 @@
       color: #fff;
     }
 
-    .live {
-      background: #ff4747;
-      color: #fff;
-    }
-
-    .offline {
-      background: #999;
-      color: #fff;
-    }
-
-    .paused {
-      background: #d6d6d2;
-      color: #000;
-    }
+    .live { background: #ff4747; color: #fff; }
+    .offline { background: #999; color: #fff; }
+    .paused { background: #d6d6d2; color: #000; }
 
     .schedule-link {
       color: #000;
@@ -157,6 +146,76 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
+    /* --- COMMENTS SECTION --- */
+    .comments-section {
+      max-width: 700px;
+      margin: 80px auto;
+      padding: 0 20px;
+      text-align: left;
+    }
+
+    .comments-section h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      margin-bottom: 20px;
+    }
+
+    #comments {
+      background: #fff;
+      border: 2px solid #d6d6d2;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 100px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .comment {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    .comment strong {
+      color: #444;
+    }
+
+    .comment small {
+      color: #777;
+    }
+
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .comment-form input, .comment-form textarea, .comment-form button {
+      font-family: monospace;
+      font-size: 1em;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 6px;
+    }
+
+    .comment-form textarea {
+      resize: vertical;
+      height: 60px;
+    }
+
+    .comment-form button {
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .comment-form button:hover {
+      background: #333;
+    }
+
     footer {
       margin-top: 100px;
       font-size: 0.9em;
@@ -164,37 +223,15 @@
       padding-bottom: 30px;
     }
 
-    audio {
-      display: none;
-    }
+    audio { display: none; }
 
     @media (max-width: 600px) {
-      header {
-        height: 160px;
-      }
-
-      .site-logo {
-        width: 75vw;
-      }
-
-      .play-button {
-        width: 110px;
-        height: 110px;
-      }
-
-      .controls {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      #liveTag,
-      .schedule-link {
-        width: 130px;
-      }
-
-      .how-section {
-        margin: 70px auto 50px;
-      }
+      header { height: 160px; }
+      .site-logo { width: 75vw; }
+      .play-button { width: 110px; height: 110px; }
+      .controls { flex-direction: column; gap: 10px; }
+      #liveTag, .schedule-link { width: 130px; }
+      .how-section, .comments-section { margin: 70px auto 50px; }
     }
   </style>
 </head>
@@ -232,6 +269,17 @@
     </p>
   </section>
 
+  <!-- COMMENTS SECTION -->
+  <section class="comments-section">
+    <h2>Comments</h2>
+    <div id="comments"></div>
+
+    <form id="commentForm" class="comment-form">
+      <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
+      <button type="submit">Post Comment</button>
+    </form>
+  </section>
+
   <!-- FOOTER -->
   <footer>
     Streaming live via Icecast + BUTT.
@@ -242,28 +290,21 @@
 
   <!-- SCRIPT -->
   <script>
+    // --- AUDIO PLAYER ---
     const STREAM_URL = 'https://contracts-threats-athens-pipeline.trycloudflare.com/stream';
     const audio = document.getElementById('player');
     const playBtn = document.getElementById('playBtn');
     const iconPlay = document.getElementById('iconPlay');
     const iconPause = document.getElementById('iconPause');
     const liveTag = document.getElementById('liveTag');
-    let playing = false;
-    let isLive = false;
+    let playing = false, isLive = false;
 
     liveTag.textContent = '';
-
     audio.src = STREAM_URL;
 
-    playBtn.addEventListener('mousedown', () => {
-      playBtn.style.transform = 'translateY(4px) scale(0.96)';
-    });
-    playBtn.addEventListener('mouseup', () => {
-      playBtn.style.transform = 'translateY(0) scale(1)';
-    });
-    playBtn.addEventListener('mouseleave', () => {
-      playBtn.style.transform = 'translateY(0) scale(1)';
-    });
+    playBtn.addEventListener('mousedown', () => playBtn.style.transform = 'translateY(4px) scale(0.96)');
+    playBtn.addEventListener('mouseup', () => playBtn.style.transform = 'translateY(0) scale(1)');
+    playBtn.addEventListener('mouseleave', () => playBtn.style.transform = 'translateY(0) scale(1)');
 
     playBtn.addEventListener('click', async () => {
       if (playing) {
@@ -276,22 +317,18 @@
         liveTag.className = 'paused';
         return;
       }
-
       liveTag.textContent = 'Connecting';
       liveTag.className = 'paused';
-
       try {
         await audio.play();
-        playing = true;
-        isLive = true;
+        playing = true; isLive = true;
         playBtn.style.background = '#d6d6d2';
         iconPlay.style.display = 'none';
         iconPause.style.display = 'block';
         liveTag.textContent = 'Live Now';
         liveTag.className = 'live';
-      } catch (e) {
-        playing = false;
-        isLive = false;
+      } catch {
+        playing = false; isLive = false;
         playBtn.style.background = '#000';
         iconPlay.style.display = 'block';
         iconPause.style.display = 'none';
@@ -313,6 +350,67 @@
       iconPause.style.display = 'none';
       playing = false;
     });
+
+    // --- COMMENTS SYSTEM ---
+    const commentsDiv = document.getElementById('comments');
+    const commentForm = document.getElementById('commentForm');
+    const commentInput = document.getElementById('commentInput');
+
+    const COMMENTS_KEY = 'faes_comments';
+    const USERNAME_KEY = 'faes_username';
+    const LAST_RESET_KEY = 'faes_last_reset';
+    const DAY_MS = 24 * 60 * 60 * 1000;
+
+    function resetIfOld() {
+      const lastReset = localStorage.getItem(LAST_RESET_KEY);
+      const now = Date.now();
+      if (!lastReset || now - lastReset > DAY_MS) {
+        localStorage.removeItem(COMMENTS_KEY);
+        localStorage.setItem(LAST_RESET_KEY, now);
+      }
+    }
+
+    resetIfOld();
+
+    function getComments() {
+      return JSON.parse(localStorage.getItem(COMMENTS_KEY) || '[]');
+    }
+
+    function saveComments(comments) {
+      localStorage.setItem(COMMENTS_KEY, JSON.stringify(comments));
+    }
+
+    function renderComments() {
+      const comments = getComments();
+      commentsDiv.innerHTML = comments.length
+        ? comments.map(c => `
+            <div class="comment">
+              <strong>${c.user}</strong> <small>• ${new Date(c.time).toLocaleString()}</small>
+              <div>${c.text}</div>
+            </div>
+          `).join('')
+        : '<p>No comments yet — be the first!</p>';
+    }
+
+    let username = localStorage.getItem(USERNAME_KEY);
+    if (!username) {
+      username = prompt("Enter a username for comments:");
+      if (!username || !username.trim()) username = "Anonymous";
+      localStorage.setItem(USERNAME_KEY, username);
+    }
+
+    commentForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = commentInput.value.trim();
+      if (!text) return;
+      const comments = getComments();
+      comments.push({ user: username, text, time: Date.now() });
+      saveComments(comments);
+      commentInput.value = '';
+      renderComments();
+    });
+
+    renderComments();
   </script>
 </body>
 </html>
