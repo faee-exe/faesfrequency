@@ -3,8 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>faesTASTE</title>
-  <meta name="description" content="faesTASTE digital radio project!">
+  <title>faesFrequency — transmitting sound through the static</title>
+  <meta name="description" content="faesFrequency is an independent digital radio stream broadcasting live through Icecast.">
+
+  <!-- 🖼️ Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <!-- 📡 Open Graph (for link previews) -->
+  <meta property="og:title" content="faesFrequency">
+  <meta property="og:description" content="transmitting sound through the static">
+  <meta property="og:image" content="https://faee-exe.github.io/faestaste/logo.png">
+  <meta property="og:url" content="https://faee-exe.github.io/faestaste/">
+  <meta name="theme-color" content="#d6d6d2">
+
   <style>
     body {
       margin: 0;
@@ -14,6 +26,7 @@
       text-align: center;
     }
 
+    /* --- HEADER --- */
     header {
       background: #d6d6d2;
       height: 220px;
@@ -23,17 +36,18 @@
       overflow: hidden;
     }
 
-    header img {
-      width: min(60vw, 550px);
+    .site-logo {
+      width: min(55vw, 480px);
       height: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
     }
 
-    header img:hover {
+    .site-logo:hover {
       transform: scale(1.03);
     }
 
+    /* --- PLAY BUTTON --- */
     .play-button {
       background: #000;
       border-radius: 50%;
@@ -58,6 +72,7 @@
       fill: #fff;
     }
 
+    /* --- CONTROLS --- */
     .controls {
       display: flex;
       justify-content: center;
@@ -116,7 +131,7 @@
       color: #fff;
     }
 
-    /* --- New Section --- */
+    /* --- HOW SECTION --- */
     .how-section {
       max-width: 700px;
       margin: 100px auto 80px;
@@ -158,7 +173,7 @@
         height: 160px;
       }
 
-      header img {
+      .site-logo {
         width: 75vw;
       }
 
@@ -184,21 +199,24 @@
   </style>
 </head>
 <body>
+  <!-- HEADER -->
   <header>
-    <img src="logo.png" alt="faesTASTE Radio logo">
+    <img src="logo.png" alt="faesFrequency logo" class="site-logo">
   </header>
 
+  <!-- PLAY BUTTON -->
   <div class="play-button" id="playBtn">
     <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
+  <!-- CONTROLS -->
   <div class="controls">
     <div id="liveTag" class="offline"></div>
     <a href="schedule.html" class="schedule-link">Schedule</a>
   </div>
 
-  <!-- ✨ NEW SECTION: "How did you do this?" -->
+  <!-- HOW SECTION -->
   <section class="how-section">
     <h2>How Did You Do This?</h2>
     <p>
@@ -214,12 +232,15 @@
     </p>
   </section>
 
+  <!-- FOOTER -->
   <footer>
     Streaming live via Icecast + BUTT.
   </footer>
 
+  <!-- AUDIO -->
   <audio id="player" crossorigin="anonymous"></audio>
 
+  <!-- SCRIPT -->
   <script>
     const STREAM_URL = 'https://contracts-threats-athens-pipeline.trycloudflare.com/stream';
     const audio = document.getElementById('player');
