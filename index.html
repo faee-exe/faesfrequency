@@ -5,12 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>faesFrequency — transmitting sound through the static</title>
   <meta name="description" content="faesFrequency is an independent digital radio stream broadcasting live through Icecast.">
-
-  <!-- 🖼️ Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="favicon.png">
-
-  <!-- 📡 Open Graph -->
   <meta property="og:title" content="faesFrequency">
   <meta property="og:description" content="transmitting sound through the static">
   <meta property="og:image" content="https://faee-exe.github.io/faestaste/logo.png">
@@ -18,222 +14,94 @@
   <meta name="theme-color" content="#d6d6d2">
 
   <style>
-    body {
-      margin: 0;
-      font-family: monospace;
-      background: #f7f7f5;
-      color: #000;
-      text-align: center;
-    }
-
-    /* --- HEADER --- */
-    header {
-      background: #d6d6d2;
-      height: 220px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .site-logo {
-      width: min(55vw, 480px);
-      height: auto;
-      object-fit: contain;
-      transition: transform 0.3s ease;
-    }
-
+    body { margin: 0; font-family: monospace; background: #f7f7f5; color: #000; text-align: center; }
+    header { background: #d6d6d2; height: 220px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .site-logo { width: min(55vw, 480px); height: auto; object-fit: contain; transition: transform 0.3s ease; }
     .site-logo:hover { transform: scale(1.03); }
 
-    /* --- PLAY BUTTON --- */
-    .play-button {
-      background: #000;
-      border-radius: 50%;
-      width: 130px;
-      height: 130px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 80px auto 35px;
-      cursor: pointer;
-      transition: transform 0.1s ease, background 0.2s ease;
-      user-select: none;
+    .play-button { background: #000; border-radius: 50%; width: 130px; height: 130px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 80px auto 35px; cursor: pointer;
+      transition: transform 0.1s ease, background 0.2s ease; user-select: none;
     }
-
     .play-button:active { transform: translateY(4px) scale(0.96); }
     .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
-    /* --- CONTROLS --- */
-    .controls {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 14px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    #liveTag,
-    .schedule-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      height: 48px;
-      width: 150px;
-      font-size: 0.9em;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border: 2px solid #000;
+    .controls { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 20px; flex-wrap: wrap; }
+    #liveTag, .schedule-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      height: 48px; width: 150px; font-size: 0.9em; font-weight: bold;
+      text-transform: uppercase; letter-spacing: 0.05em;
+      border: 2px solid #000; border-radius: 4px; line-height: 1;
       transition: background 0.2s ease, color 0.2s ease;
-      line-height: 1;
-      border-radius: 4px;
     }
-
-    #liveTag {
-      border: none;
-      background: #999;
-      color: #fff;
-    }
-
+    #liveTag { border: none; background: #999; color: #fff; }
     .live { background: #ff4747; color: #fff; }
     .offline { background: #999; color: #fff; }
     .paused { background: #d6d6d2; color: #000; }
-
-    .schedule-link {
-      color: #000;
-      text-decoration: none;
-      background: transparent;
-    }
-
+    .schedule-link { color: #000; text-decoration: none; background: transparent; }
     .schedule-link:hover { background: #000; color: #fff; }
 
-    /* --- COMMENTS SECTION --- */
-    .comments-section {
-      max-width: 700px;
-      margin: 80px auto 60px;
-      padding: 0 20px;
-      text-align: left;
-    }
-
-    .comments-section h2 {
-      text-align: center;
-      text-transform: uppercase;
-      font-size: 1.4em;
-      margin-bottom: 12px;
-    }
-
-    #comments {
-      background: #fff;
-      border: 2px solid #d6d6d2;
-      padding: 15px;
-      border-radius: 8px;
-      min-height: 100px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    .comment {
-      margin-bottom: 10px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
-
+    /* --- COMMENTS --- */
+    .comments-section { max-width: 700px; margin: 80px auto 60px; padding: 0 20px; text-align: left; }
+    .comments-section h2 { text-align: center; text-transform: uppercase; font-size: 1.4em; margin-bottom: 12px; }
+    #comments { background: #fff; border: 2px solid #d6d6d2; padding: 15px; border-radius: 8px; min-height: 100px;
+      margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .comment { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
     .comment strong { color: #444; }
     .comment small { color: #777; }
 
-    .comment-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
+    .comment-form { display: flex; flex-direction: column; gap: 10px; }
     .comment-form textarea, .comment-form button {
-      font-family: monospace;
-      font-size: 1em;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 6px;
+      font-family: monospace; font-size: 1em; padding: 10px; border: 2px solid #000; border-radius: 6px;
     }
-
     .comment-form textarea { resize: vertical; height: 60px; }
-
-    .comment-form button {
-      background: #000;
-      color: #fff;
-      cursor: pointer;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
+    .comment-form button { background: #000; color: #fff; cursor: pointer; font-weight: bold; text-transform: uppercase; }
     .comment-form button:hover { background: #333; }
 
-    /* --- HOW SECTION --- */
-    .how-section {
-      max-width: 700px;
-      margin: 100px auto 80px;
-      padding: 0 20px;
-      text-align: left;
-      line-height: 1.6;
-      color: #222;
-    }
+    .user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .change-user-btn { font-family: monospace; font-size: 0.9em; border: 2px solid #000; padding: 6px 10px;
+      border-radius: 6px; background: transparent; cursor: pointer; transition: background 0.2s ease, color 0.2s ease; }
+    .change-user-btn:hover { background: #000; color: #fff; }
 
-    .how-section h2 {
-      text-align: center;
-      text-transform: uppercase;
-      font-size: 1.4em;
-      margin-bottom: 30px;
-      letter-spacing: 0.05em;
-    }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.4);
+      display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .modal { width: min(92vw, 460px); background: #fff; border: 2px solid #000; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25); padding: 18px 18px 16px; text-align: left; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .modal-title { font-size: 1.1em; text-transform: uppercase; letter-spacing: 0.05em; }
+    .modal-close { background: transparent; border: 2px solid #000; border-radius: 8px; padding: 4px 8px; cursor: pointer; font-family: monospace; }
 
-    .how-section p {
-      background: #fff;
-      border: 2px solid #d6d6d2;
-      padding: 20px 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
+    .how-section { max-width: 700px; margin: 100px auto 80px; padding: 0 20px; text-align: left; line-height: 1.6; color: #222; }
+    .how-section h2 { text-align: center; text-transform: uppercase; font-size: 1.4em; margin-bottom: 30px; letter-spacing: 0.05em; }
+    .how-section p { background: #fff; border: 2px solid #d6d6d2; padding: 20px 25px; border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
 
-    footer {
-      margin-top: 100px;
-      font-size: 0.9em;
-      color: #555;
-      padding-bottom: 30px;
-    }
-
+    footer { margin-top: 100px; font-size: 0.9em; color: #555; padding-bottom: 30px; }
     audio { display: none; }
-
-    @media (max-width: 600px) {
-      header { height: 160px; }
-      .site-logo { width: 75vw; }
-      .play-button { width: 110px; height: 110px; }
-      .controls { flex-direction: column; gap: 10px; }
-      #liveTag, .schedule-link { width: 130px; }
-      .how-section, .comments-section { margin: 70px auto 50px; }
-    }
   </style>
 </head>
-<body>
-  <!-- HEADER -->
-  <header>
-    <img src="logo.png" alt="faesFrequency logo" class="site-logo">
-  </header>
 
-  <!-- PLAY BUTTON -->
+<body>
+  <header><img src="logo.png" alt="faesFrequency logo" class="site-logo"></header>
+
   <div class="play-button" id="playBtn">
     <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
-  <!-- CONTROLS -->
   <div class="controls">
     <div id="liveTag" class="offline"></div>
     <a href="schedule.html" class="schedule-link">Schedule</a>
   </div>
 
-  <!-- COMMENTS SECTION -->
+  <!-- COMMENTS -->
   <section class="comments-section">
     <h2>Comments</h2>
+    <div class="user-bar">
+      <span id="userDisplay">Anonymous</span>
+      <button class="change-user-btn" id="openUserCard">Change User</button>
+    </div>
     <div id="comments"></div>
     <form id="commentForm" class="comment-form">
       <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
@@ -241,7 +109,6 @@
     </form>
   </section>
 
-  <!-- HOW SECTION -->
   <section class="how-section">
     <h2>How Did You Do This?</h2>
     <p>
@@ -257,16 +124,25 @@
     </p>
   </section>
 
-  <!-- FOOTER -->
   <footer>Streaming live via Icecast + BUTT.</footer>
-
-  <!-- AUDIO -->
   <audio id="player" crossorigin="anonymous"></audio>
 
-  <!-- 🔥 Firebase-powered Comments -->
+  <!-- USER MODAL -->
+  <div class="modal-backdrop" id="userCardBackdrop">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Set Username</div>
+        <button class="modal-close" id="closeUserCard">Close</button>
+      </div>
+      <input id="usernameInput" type="text" placeholder="Your username" style="width:100%;margin-bottom:10px;padding:8px;border:2px solid #000;border-radius:8px;">
+      <button id="saveUsername" class="btn-primary" style="padding:8px 12px;border:2px solid #000;border-radius:8px;background:#000;color:#fff;cursor:pointer;">Save</button>
+    </div>
+  </div>
+
+  <!-- FIREBASE + COMMENTS SCRIPT -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+    import { getDatabase, ref, push, set, onValue, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCewcWr5ZkpzHWrOCxza0yHU38_Vqer9Vg",
@@ -285,100 +161,84 @@
     const commentsDiv = document.getElementById("comments");
     const commentForm = document.getElementById("commentForm");
     const commentInput = document.getElementById("commentInput");
+    const userDisplay = document.getElementById("userDisplay");
+    const openUserCardBtn = document.getElementById("openUserCard");
+    const modal = document.getElementById("userCardBackdrop");
+    const closeModal = document.getElementById("closeUserCard");
+    const saveUsernameBtn = document.getElementById("saveUsername");
+    const usernameInput = document.getElementById("usernameInput");
 
-    let username = localStorage.getItem("faes_username") || "";
+    const USER_KEY = "faes_user";
+    const USER_TIME = "faes_user_time";
+    const WEEK = 7 * 24 * 60 * 60 * 1000;
+    let username = localStorage.getItem(USER_KEY) || "";
+    let userSetAt = Number(localStorage.getItem(USER_TIME)) || 0;
 
-    // Render comments live
+    function updateUserDisplay() {
+      userDisplay.textContent = username || "Anonymous";
+    }
+    updateUserDisplay();
+
+    // Username modal
+    openUserCardBtn.addEventListener("click", () => modal.style.display = "flex");
+    closeModal.addEventListener("click", () => modal.style.display = "none");
+    saveUsernameBtn.addEventListener("click", () => {
+      const val = usernameInput.value.trim();
+      if (!val) return alert("Enter a username!");
+      const now = Date.now();
+      if (userSetAt && now - userSetAt < WEEK) {
+        const remaining = Math.ceil((WEEK - (now - userSetAt)) / (60 * 60 * 1000));
+        return alert(`You can change again in ${remaining} hours.`);
+      }
+      username = val;
+      userSetAt = now;
+      localStorage.setItem(USER_KEY, username);
+      localStorage.setItem(USER_TIME, userSetAt);
+      updateUserDisplay();
+      modal.style.display = "none";
+    });
+
+    // Auto-clean comments older than 7 days
+    function cleanupOldComments(data) {
+      const cutoff = Date.now() - WEEK;
+      for (const [key, value] of Object.entries(data || {})) {
+        if (value.time < cutoff) remove(ref(db, `comments/${key}`));
+      }
+    }
+
+    // Listen for comments
     onValue(commentsRef, (snapshot) => {
       const data = snapshot.val();
       commentsDiv.innerHTML = "";
       if (data) {
-        const comments = Object.values(data).sort((a, b) => b.time - a.time);
-        comments.forEach((c) => {
-          const div = document.createElement("div");
-          div.className = "comment";
-          div.innerHTML = `
-            <strong>${sanitize(c.user)}</strong>
-            <small> • ${new Date(c.time).toLocaleString()}</small>
-            <div>${sanitize(c.text)}</div>
-          `;
-          commentsDiv.appendChild(div);
+        cleanupOldComments(data);
+        const sorted = Object.values(data).sort((a, b) => b.time - a.time);
+        sorted.forEach(c => {
+          const el = document.createElement("div");
+          el.className = "comment";
+          el.innerHTML = `<strong>${sanitize(c.user)}</strong> <small>• ${new Date(c.time).toLocaleString()}</small><div>${sanitize(c.text)}</div>`;
+          commentsDiv.appendChild(el);
         });
       } else {
         commentsDiv.innerHTML = "<p>No comments yet — be the first!</p>";
       }
     });
 
-    // Submit comment
+    // Post comment
     commentForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const text = commentInput.value.trim();
       if (!text) return;
-
-      if (!username) {
-        username = prompt("Enter a username:") || "Anonymous";
-        localStorage.setItem("faes_username", username);
-      }
-
-      const newComment = { user: username, text, time: Date.now() };
+      if (!username) return modal.style.display = "flex";
+      const comment = { user: username, text, time: Date.now() };
       const newRef = push(commentsRef);
-      set(newRef, newComment);
+      set(newRef, comment);
       commentInput.value = "";
     });
 
-    // Sanitize text
     function sanitize(str) {
-      return str.replace(/[&<>"']/g, (m) => (
-        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]
-      ));
+      return str.replace(/[&<>"']/g, m => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
     }
-
-    // --- Player Script ---
-    const STREAM_URL = 'https://contracts-threats-athens-pipeline.trycloudflare.com/stream';
-    const audio = document.getElementById('player');
-    const playBtn = document.getElementById('playBtn');
-    const iconPlay = document.getElementById('iconPlay');
-    const iconPause = document.getElementById('iconPause');
-    const liveTag = document.getElementById('liveTag');
-    let playing = false;
-    let isLive = false;
-    liveTag.textContent = '';
-    audio.src = STREAM_URL;
-
-    playBtn.addEventListener('click', async () => {
-      if (playing) {
-        audio.pause();
-        playing = false;
-        playBtn.style.background = '#000';
-        iconPlay.style.display = 'block';
-        iconPause.style.display = 'none';
-        liveTag.textContent = 'Paused';
-        liveTag.className = 'paused';
-        return;
-      }
-
-      liveTag.textContent = 'Connecting';
-      liveTag.className = 'paused';
-
-      try {
-        await audio.play();
-        playing = true;
-        isLive = true;
-        playBtn.style.background = '#d6d6d2';
-        iconPlay.style.display = 'none';
-        iconPause.style.display = 'block';
-        liveTag.textContent = 'Live Now';
-        liveTag.className = 'live';
-      } catch (e) {
-        playing = false;
-        isLive = false;
-        playBtn.style.background = '#000';
-        iconPlay.style.display = 'block';
-        iconPause.style.display = 'none';
-        liveTag.textContent = 'Offline';
-        liveTag.className = 'offline';
-      }
-    });
   </script>
 </body>
 </html>
