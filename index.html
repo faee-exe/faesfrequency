@@ -43,9 +43,7 @@
       transition: transform 0.3s ease;
     }
 
-    .site-logo:hover {
-      transform: scale(1.03);
-    }
+    .site-logo:hover { transform: scale(1.03); }
 
     /* --- PLAY BUTTON --- */
     .play-button {
@@ -62,15 +60,8 @@
       user-select: none;
     }
 
-    .play-button:active {
-      transform: translateY(4px) scale(0.96);
-    }
-
-    .play-button svg {
-      width: 50px;
-      height: 50px;
-      fill: #fff;
-    }
+    .play-button:active { transform: translateY(4px) scale(0.96); }
+    .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
     /* --- CONTROLS --- */
     .controls {
@@ -82,8 +73,7 @@
       flex-wrap: wrap;
     }
 
-    #liveTag,
-    .schedule-link {
+    #liveTag, .schedule-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -95,16 +85,10 @@
       letter-spacing: 0.05em;
       border: 2px solid #000;
       transition: background 0.2s ease, color 0.2s ease;
-      line-height: 1;
       border-radius: 4px;
     }
 
-    #liveTag {
-      border: none;
-      background: #999;
-      color: #fff;
-    }
-
+    #liveTag { border: none; background: #999; color: #fff; }
     .live { background: #ff4747; color: #fff; }
     .offline { background: #999; color: #fff; }
     .paused { background: #d6d6d2; color: #000; }
@@ -114,8 +98,85 @@
       text-decoration: none;
       background: transparent;
     }
+    .schedule-link:hover { background: #000; color: #fff; }
 
-    .schedule-link:hover {
+    /* --- COMMENTS SECTION --- */
+    .comments-section {
+      max-width: 700px;
+      margin: 80px auto 60px;
+      padding: 0 20px;
+      text-align: left;
+    }
+
+    .comments-section h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      margin-bottom: 20px;
+    }
+
+    #comments {
+      background: #fff;
+      border: 2px solid #d6d6d2;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 100px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .comment {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
+    .comment strong { color: #444; }
+    .comment small { color: #777; }
+
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .comment-form textarea, .comment-form button {
+      font-family: monospace;
+      font-size: 1em;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 6px;
+    }
+
+    .comment-form textarea { resize: vertical; height: 60px; }
+
+    .comment-form button {
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .comment-form button:hover { background: #333; }
+
+    .user-controls {
+      text-align: right;
+      margin-bottom: 10px;
+    }
+
+    .change-user-btn {
+      font-family: monospace;
+      font-size: 0.9em;
+      border: 2px solid #000;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .change-user-btn:hover {
       background: #000;
       color: #fff;
     }
@@ -144,76 +205,6 @@
       padding: 20px 25px;
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    /* --- COMMENTS SECTION --- */
-    .comments-section {
-      max-width: 700px;
-      margin: 80px auto;
-      padding: 0 20px;
-      text-align: left;
-    }
-
-    .comments-section h2 {
-      text-align: center;
-      text-transform: uppercase;
-      font-size: 1.4em;
-      margin-bottom: 20px;
-    }
-
-    #comments {
-      background: #fff;
-      border: 2px solid #d6d6d2;
-      padding: 15px;
-      border-radius: 8px;
-      min-height: 100px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    .comment {
-      margin-bottom: 10px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
-
-    .comment strong {
-      color: #444;
-    }
-
-    .comment small {
-      color: #777;
-    }
-
-    .comment-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .comment-form input, .comment-form textarea, .comment-form button {
-      font-family: monospace;
-      font-size: 1em;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 6px;
-    }
-
-    .comment-form textarea {
-      resize: vertical;
-      height: 60px;
-    }
-
-    .comment-form button {
-      background: #000;
-      color: #fff;
-      cursor: pointer;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    .comment-form button:hover {
-      background: #333;
     }
 
     footer {
@@ -253,6 +244,19 @@
     <a href="schedule.html" class="schedule-link">Schedule</a>
   </div>
 
+  <!-- COMMENTS SECTION -->
+  <section class="comments-section">
+    <h2>Comments</h2>
+    <div class="user-controls">
+      <button class="change-user-btn" id="changeUserBtn">Change User</button>
+    </div>
+    <div id="comments"></div>
+    <form id="commentForm" class="comment-form">
+      <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
+      <button type="submit">Post Comment</button>
+    </form>
+  </section>
+
   <!-- HOW SECTION -->
   <section class="how-section">
     <h2>How Did You Do This?</h2>
@@ -269,23 +273,9 @@
     </p>
   </section>
 
-  <!-- COMMENTS SECTION -->
-  <section class="comments-section">
-    <h2>Comments</h2>
-    <div id="comments"></div>
-
-    <form id="commentForm" class="comment-form">
-      <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
-      <button type="submit">Post Comment</button>
-    </form>
-  </section>
-
   <!-- FOOTER -->
-  <footer>
-    Streaming live via Icecast + BUTT.
-  </footer>
+  <footer>Streaming live via Icecast + BUTT.</footer>
 
-  <!-- AUDIO -->
   <audio id="player" crossorigin="anonymous"></audio>
 
   <!-- SCRIPT -->
@@ -355,6 +345,7 @@
     const commentsDiv = document.getElementById('comments');
     const commentForm = document.getElementById('commentForm');
     const commentInput = document.getElementById('commentInput');
+    const changeUserBtn = document.getElementById('changeUserBtn');
 
     const COMMENTS_KEY = 'faes_comments';
     const USERNAME_KEY = 'faes_username';
@@ -384,27 +375,31 @@
       const comments = getComments();
       commentsDiv.innerHTML = comments.length
         ? comments.map(c => `
-            <div class="comment">
-              <strong>${c.user}</strong> <small>• ${new Date(c.time).toLocaleString()}</small>
-              <div>${c.text}</div>
-            </div>
-          `).join('')
+          <div class="comment">
+            <strong>${c.user}</strong> <small>• ${new Date(c.time).toLocaleString()}</small>
+            <div>${c.text}</div>
+          </div>`).join('')
         : '<p>No comments yet — be the first!</p>';
     }
 
     let username = localStorage.getItem(USERNAME_KEY);
-    if (!username) {
-      username = prompt("Enter a username for comments:");
-      if (!username || !username.trim()) username = "Anonymous";
+
+    changeUserBtn.addEventListener('click', () => {
+      username = prompt('Enter new username:') || 'Anonymous';
       localStorage.setItem(USERNAME_KEY, username);
-    }
+      alert(`Username changed to ${username}`);
+    });
 
     commentForm.addEventListener('submit', e => {
       e.preventDefault();
+      if (!username) {
+        username = prompt('Enter a username:') || 'Anonymous';
+        localStorage.setItem(USERNAME_KEY, username);
+      }
       const text = commentInput.value.trim();
       if (!text) return;
       const comments = getComments();
-      comments.push({ user: username, text, time: Date.now() });
+      comments.unshift({ user: username, text, time: Date.now() }); // newest first
       saveComments(comments);
       commentInput.value = '';
       renderComments();
