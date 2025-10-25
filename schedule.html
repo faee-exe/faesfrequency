@@ -3,8 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>faesFrequency — Schedule</title>
-  <meta name="description" content="faesFrequency weekly show schedule">
+  <title>faesFrequency — Broadcast Schedule</title>
+  <meta name="description" content="faesFrequency weekly radio show schedule.">
+
+  <!-- 🖼️ Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="favicon.png">
+
+  <!-- 📡 Open Graph -->
+  <meta property="og:title" content="faesFrequency — Schedule">
+  <meta property="og:description" content="Broadcast lineup for faesFrequency Radio">
+  <meta property="og:image" content="https://faee-exe.github.io/faestaste/logo.png">
+  <meta property="og:url" content="https://faee-exe.github.io/faestaste/schedule.html">
+  <meta name="theme-color" content="#d6d6d2">
 
   <style>
     body {
@@ -18,30 +29,21 @@
     /* --- HEADER --- */
     header {
       background: #d6d6d2;
+      height: 220px;
       display: flex;
-      justify-content: center;
       align-items: center;
-      padding: 60px 0; /* same height */
-      overflow: hidden; /* ensures logo doesn't stretch grey space */
+      justify-content: center;
+      overflow: hidden;
     }
 
-    .logo-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
-      max-width: 800px;
-    }
-
-    header img {
-      width: 90%;           /* fills most of the header width */
-      max-width: 700px;     /* 🔥 bigger logo on desktop */
+    .site-logo {
+      width: min(55vw, 480px); /* same behavior as index */
       height: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
     }
 
-    header img:hover {
+    .site-logo:hover {
       transform: scale(1.03);
     }
 
@@ -138,29 +140,13 @@
     }
 
     /* --- RESPONSIVE --- */
-    @media (max-width: 1024px) {
-      header img {
-        max-width: 580px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      header img {
-        max-width: 440px;
-      }
-
+    @media (max-width: 600px) {
       header {
-        padding: 50px 0;
-      }
-    }
-
-    @media (max-width: 480px) {
-      header img {
-        max-width: 80vw;
+        height: 160px;
       }
 
-      header {
-        padding: 40px 0;
+      .site-logo {
+        width: 75vw;
       }
 
       .content {
@@ -186,12 +172,10 @@
 <body>
   <!-- HEADER -->
   <header>
-    <div class="logo-container">
-      <img src="logo.png" alt="faesFrequency logo">
-    </div>
+    <img src="logo.png" alt="faesFrequency logo" class="site-logo">
   </header>
 
-  <!-- SCHEDULE -->
+  <!-- CONTENT -->
   <div class="content">
     <h1>Broadcast Schedule</h1>
     <table>
