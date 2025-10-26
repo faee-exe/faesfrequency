@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>faesFrequency — transmitting sound through the static</title>
   <meta name="description" content="faesFrequency is an independent digital radio stream broadcasting live through Icecast.">
+
   <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="favicon.png">
+
   <meta property="og:title" content="faesFrequency">
   <meta property="og:description" content="transmitting sound through the static">
   <meta property="og:image" content="https://faee-exe.github.io/faestaste/logo.png">
@@ -14,24 +16,51 @@
   <meta name="theme-color" content="#d6d6d2">
 
   <style>
-    body { margin: 0; font-family: monospace; background: #f7f7f5; color: #000; text-align: center; }
-    header { background: #d6d6d2; height: 220px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-    .site-logo { width: min(55vw, 480px); height: auto; object-fit: contain; transition: transform 0.3s ease; }
+    body {
+      margin: 0;
+      font-family: monospace;
+      background: #f7f7f5;
+      color: #000;
+      text-align: center;
+    }
+
+    header {
+      background: #d6d6d2;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .site-logo {
+      width: min(55vw, 480px);
+      height: auto;
+      object-fit: contain;
+      transition: transform 0.3s ease;
+    }
     .site-logo:hover { transform: scale(1.03); }
 
-    .play-button { background: #000; border-radius: 50%; width: 130px; height: 130px;
+    .play-button {
+      background: #000;
+      border-radius: 50%;
+      width: 130px; height: 130px;
       display: flex; align-items: center; justify-content: center;
-      margin: 80px auto 35px; cursor: pointer;
-      transition: transform 0.1s ease, background 0.2s ease; user-select: none;
+      margin: 80px auto 35px;
+      cursor: pointer;
+      transition: transform 0.1s ease, background 0.2s ease;
+      user-select: none;
     }
     .play-button:active { transform: translateY(4px) scale(0.96); }
     .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
-    .controls { display: flex; justify-content: center; align-items: center; gap: 14px; margin-top: 20px; flex-wrap: wrap; }
+    .controls {
+      display: flex; justify-content: center; align-items: center;
+      gap: 14px; margin-top: 20px; flex-wrap: wrap;
+    }
     #liveTag, .schedule-link {
       display: inline-flex; align-items: center; justify-content: center;
-      height: 48px; width: 150px; font-size: 0.9em; font-weight: bold;
-      text-transform: uppercase; letter-spacing: 0.05em;
+      height: 48px; width: 150px;
+      font-size: 0.9em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;
       border: 2px solid #000; border-radius: 4px; line-height: 1;
       transition: background 0.2s ease, color 0.2s ease;
     }
@@ -42,33 +71,149 @@
     .schedule-link { color: #000; text-decoration: none; background: transparent; }
     .schedule-link:hover { background: #000; color: #fff; }
 
-    .comments-section { max-width: 700px; margin: 80px auto 60px; padding: 0 20px; text-align: left; display: none; }
-    .comments-section h2 { text-align: center; text-transform: uppercase; font-size: 1.4em; margin-bottom: 12px; }
-    #comments { background: #fff; border: 2px solid #d6d6d2; padding: 15px; border-radius: 8px; min-height: 100px;
-      margin-bottom: 15px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
-    .comment { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    .comments-section {
+      max-width: 700px;
+      margin: 80px auto 60px;
+      padding: 0 20px;
+      text-align: left;
+      display: none;
+    }
+    .comments-section h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      margin-bottom: 12px;
+    }
+    .user-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .user-label { font-size: 0.95em; color: #333; }
+    .change-user-btn {
+      font-family: monospace;
+      font-size: 0.9em;
+      border: 2px solid #000;
+      background: transparent;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .change-user-btn:hover { background: #000; color: #fff; }
+
+    #comments {
+      background: #fff;
+      border: 2px solid #d6d6d2;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 100px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .comment {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
     .comment strong { color: #444; }
     .comment small { color: #777; }
 
-    .user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .user-indicator { font-size: 0.95em; color: #333; }
-    .change-user-btn { font-family: monospace; font-size: 0.9em; border: 2px solid #000;
-      padding: 6px 10px; border-radius: 6px; background: transparent; cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease; }
-    .change-user-btn:hover { background: #000; color: #fff; }
-
-    .comment-form { display: flex; flex-direction: column; gap: 10px; }
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
     .comment-form textarea, .comment-form button {
-      font-family: monospace; font-size: 1em; padding: 10px; border: 2px solid #000; border-radius: 6px;
+      font-family: monospace;
+      font-size: 1em;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 6px;
     }
     .comment-form textarea { resize: vertical; height: 60px; }
-    .comment-form button { background: #000; color: #fff; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+    .comment-form button {
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
     .comment-form button:hover { background: #333; }
 
-    .how-section { max-width: 700px; margin: 100px auto 80px; padding: 0 20px; text-align: left; line-height: 1.6; color: #222; }
-    .how-section h2 { text-align: center; text-transform: uppercase; font-size: 1.4em; margin-bottom: 30px; letter-spacing: 0.05em; }
-    .how-section p { background: #fff; border: 2px solid #d6d6d2; padding: 20px 25px; border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal {
+      width: min(92vw, 460px);
+      background: #fff;
+      border: 2px solid #000;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: left;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .modal-close {
+      border: 2px solid #000;
+      background: transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 3px 8px;
+    }
+    .modal-body input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 8px;
+      font-family: monospace;
+    }
+    .modal-footer {
+      text-align: right;
+      margin-top: 10px;
+    }
+    .modal-footer button {
+      font-family: monospace;
+      border: 2px solid #000;
+      border-radius: 8px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .btn-primary { background: #000; color: #fff; }
+    .btn-primary:hover { background: #333; }
+
+    .how-section {
+      max-width: 700px;
+      margin: 100px auto 80px;
+      padding: 0 20px;
+      text-align: left;
+      line-height: 1.6;
+      color: #222;
+    }
+    .how-section h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      margin-bottom: 30px;
+      letter-spacing: 0.05em;
+    }
+    .how-section p {
+      background: #fff;
+      border: 2px solid #d6d6d2;
+      padding: 20px 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
 
     footer { margin-top: 100px; font-size: 0.9em; color: #555; padding-bottom: 30px; }
     audio { display: none; }
@@ -84,9 +229,7 @@
   </style>
 </head>
 <body>
-  <header>
-    <img src="logo.png" alt="faesFrequency logo" class="site-logo">
-  </header>
+  <header><img src="logo.png" alt="faesFrequency logo" class="site-logo"></header>
 
   <div class="play-button" id="playBtn">
     <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -100,12 +243,10 @@
 
   <section class="comments-section" id="commentsSection">
     <h2>Comments</h2>
-
     <div class="user-bar">
-      <span class="user-indicator" id="currentUser">User: Anonymous</span>
+      <div class="user-label">Posting as: <strong id="userDisplay">Anonymous</strong></div>
       <button class="change-user-btn" id="changeUserBtn">Change User</button>
     </div>
-
     <div id="comments"></div>
     <form id="commentForm" class="comment-form">
       <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
@@ -120,8 +261,7 @@
       to a URL starting with <code>http</code>. Then I took my <code>http</code> Icecast link through
       a program called <strong>Cloudflare</strong> to make it start with <code>https</code> — because
       the website you’re reading this from is <code>https</code>, and <code>http</code> audio
-      can’t be broadcasted through a secure site.
-      <br><br>
+      can’t be broadcasted through a secure site.<br><br>
       Then I spent 70 years and 70 days coding this website in HTML.
       (I’m joking — I used ChatGPT, because all this work had me exhausted,
       and I couldn’t be bothered to code on top of all that 😭🙏)
@@ -130,6 +270,24 @@
 
   <footer>Streaming live via Icecast + BUTT.</footer>
   <audio id="player" crossorigin="anonymous"></audio>
+
+  <!-- Username Modal -->
+  <div class="modal-backdrop" id="userModal">
+    <div class="modal">
+      <div class="modal-header">
+        <strong>Change Username</strong>
+        <button class="modal-close" id="closeModal">X</button>
+      </div>
+      <div class="modal-body">
+        <p>Choose your display name (you can change it once every 7 days).</p>
+        <input type="text" id="usernameInput" placeholder="Enter new username">
+        <p id="cooldownNote" style="color:#555;font-size:0.9em;margin-top:6px;"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" id="saveUsername">Save</button>
+      </div>
+    </div>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
@@ -153,40 +311,47 @@
     const commentForm = document.getElementById("commentForm");
     const commentInput = document.getElementById("commentInput");
     const commentsSection = document.getElementById("commentsSection");
-    const currentUser = document.getElementById("currentUser");
+
+    const userDisplay = document.getElementById("userDisplay");
+    const userModal = document.getElementById("userModal");
+    const usernameInput = document.getElementById("usernameInput");
+    const saveUsername = document.getElementById("saveUsername");
     const changeUserBtn = document.getElementById("changeUserBtn");
+    const closeModal = document.getElementById("closeModal");
+    const cooldownNote = document.getElementById("cooldownNote");
 
-    const USER_KEY = "faes_username";
-    const USER_CHANGED_AT = "faes_user_changed";
-    const WEEK = 7 * 24 * 60 * 60 * 1000;
+    let username = localStorage.getItem("faes_username") || "Anonymous";
+    let lastChange = Number(localStorage.getItem("faes_lastChange")) || 0;
+    const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-    let username = localStorage.getItem(USER_KEY) || "Anonymous";
-    let lastChange = Number(localStorage.getItem(USER_CHANGED_AT)) || 0;
+    userDisplay.textContent = username;
 
-    function updateUserDisplay() {
-      currentUser.textContent = `User: ${username}`;
-    }
-    updateUserDisplay();
-
-    // Change user button
-    changeUserBtn.addEventListener("click", () => {
+    function canChange() {
       const now = Date.now();
-      if (now - lastChange < WEEK) {
-        const hoursLeft = Math.ceil((WEEK - (now - lastChange)) / (1000 * 60 * 60));
-        alert(`You can change your username again in ${hoursLeft} hours.`);
-        return;
-      }
-      const newName = prompt("Enter a new username:")?.trim();
-      if (newName) {
-        username = newName;
-        localStorage.setItem(USER_KEY, username);
-        localStorage.setItem(USER_CHANGED_AT, String(now));
-        lastChange = now;
-        updateUserDisplay();
-      }
-    });
+      return now - lastChange > WEEK_MS;
+    }
 
-    // Render comments
+    changeUserBtn.onclick = () => {
+      userModal.style.display = "flex";
+      usernameInput.value = username;
+      cooldownNote.textContent = canChange()
+        ? "You can change your username now."
+        : "You can change it again in " +
+          Math.ceil((WEEK_MS - (Date.now() - lastChange)) / (1000 * 60 * 60)) +
+          " hours.";
+      saveUsername.disabled = !canChange();
+      saveUsername.style.opacity = canChange() ? 1 : 0.5;
+    };
+    closeModal.onclick = () => (userModal.style.display = "none");
+    saveUsername.onclick = () => {
+      if (!usernameInput.value.trim()) return alert("Enter a username.");
+      username = usernameInput.value.trim();
+      userDisplay.textContent = username;
+      localStorage.setItem("faes_username", username);
+      localStorage.setItem("faes_lastChange", Date.now());
+      userModal.style.display = "none";
+    };
+
     onValue(commentsRef, (snapshot) => {
       const data = snapshot.val();
       commentsDiv.innerHTML = "";
@@ -195,11 +360,7 @@
         comments.forEach((c) => {
           const div = document.createElement("div");
           div.className = "comment";
-          div.innerHTML = `
-            <strong>${sanitize(c.user)}</strong>
-            <small> • ${new Date(c.time).toLocaleString()}</small>
-            <div>${sanitize(c.text)}</div>
-          `;
+          div.innerHTML = `<strong>${sanitize(c.user)}</strong> <small>• ${new Date(c.time).toLocaleString()}</small><div>${sanitize(c.text)}</div>`;
           commentsDiv.appendChild(div);
         });
       } else {
@@ -207,7 +368,6 @@
       }
     });
 
-    // Submit comment
     commentForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const text = commentInput.value.trim();
@@ -219,61 +379,55 @@
     });
 
     function sanitize(str) {
-      return str.replace(/[&<>"']/g, (m) => (
-        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]
-      ));
+      return str.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
     }
 
-    // --- Player Script ---
-    const STREAM_URL = 'https://contracts-threats-athens-pipeline.trycloudflare.com/stream';
-    const audio = document.getElementById('player');
-    const playBtn = document.getElementById('playBtn');
-    const iconPlay = document.getElementById('iconPlay');
-    const iconPause = document.getElementById('iconPause');
-    const liveTag = document.getElementById('liveTag');
+    // --- AUDIO + COMMENT TOGGLE ---
+    const STREAM_URL = "https://contracts-threats-athens-pipeline.trycloudflare.com/stream";
+    const audio = document.getElementById("player");
+    const playBtn = document.getElementById("playBtn");
+    const iconPlay = document.getElementById("iconPlay");
+    const iconPause = document.getElementById("iconPause");
+    const liveTag = document.getElementById("liveTag");
     let playing = false;
     let isLive = false;
-
-    liveTag.textContent = '';
     audio.src = STREAM_URL;
 
-    playBtn.addEventListener('click', async () => {
+    playBtn.addEventListener("click", async () => {
       if (playing) {
         audio.pause();
         playing = false;
-        isLive = false;
-        playBtn.style.background = '#000';
-        iconPlay.style.display = 'block';
-        iconPause.style.display = 'none';
-        liveTag.textContent = 'Offline';
-        liveTag.className = 'offline';
+        playBtn.style.background = "#000";
+        iconPlay.style.display = "block";
+        iconPause.style.display = "none";
+        liveTag.textContent = "Paused";
+        liveTag.className = "paused";
         commentsSection.style.display = "none";
-        await remove(commentsRef);
+        remove(commentsRef);
         return;
       }
 
-      liveTag.textContent = 'Connecting';
-      liveTag.className = 'paused';
+      liveTag.textContent = "Connecting";
+      liveTag.className = "paused";
 
       try {
         await audio.play();
         playing = true;
         isLive = true;
-        playBtn.style.background = '#d6d6d2';
-        iconPlay.style.display = 'none';
-        iconPause.style.display = 'block';
-        liveTag.textContent = 'Live Now';
-        liveTag.className = 'live';
+        playBtn.style.background = "#d6d6d2";
+        iconPlay.style.display = "none";
+        iconPause.style.display = "block";
+        liveTag.textContent = "Live Now";
+        liveTag.className = "live";
         commentsSection.style.display = "block";
-      } catch (e) {
+      } catch {
         playing = false;
         isLive = false;
-        playBtn.style.background = '#000';
-        iconPlay.style.display = 'block';
-        iconPause.style.display = 'none';
-        liveTag.textContent = 'Offline';
-        liveTag.className = 'offline';
-        commentsSection.style.display = "none";
+        playBtn.style.background = "#000";
+        iconPlay.style.display = "block";
+        iconPause.style.display = "none";
+        liveTag.textContent = "Offline";
+        liveTag.className = "offline";
       }
     });
   </script>
