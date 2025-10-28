@@ -6,9 +6,11 @@
   <title>faesFrequency — transmitting sound through the static</title>
   <meta name="description" content="faesFrequency is an independent digital radio stream broadcasting live through Icecast.">
 
+  <!-- 🖼️ Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="favicon.png">
 
+  <!-- 📡 Open Graph -->
   <meta property="og:title" content="faesFrequency">
   <meta property="og:description" content="transmitting sound through the static">
   <meta property="og:image" content="https://faee-exe.github.io/faestaste/logo.png">
@@ -32,6 +34,7 @@
       justify-content: center;
       overflow: hidden;
     }
+
     .site-logo {
       width: min(55vw, 480px);
       height: auto;
@@ -43,8 +46,11 @@
     .play-button {
       background: #000;
       border-radius: 50%;
-      width: 130px; height: 130px;
-      display: flex; align-items: center; justify-content: center;
+      width: 130px;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin: 80px auto 35px;
       cursor: pointer;
       transition: transform 0.1s ease, background 0.2s ease;
@@ -54,14 +60,26 @@
     .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
     .controls {
-      display: flex; justify-content: center; align-items: center;
-      gap: 14px; margin-top: 20px; flex-wrap: wrap;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      margin-top: 20px;
+      flex-wrap: wrap;
     }
     #liveTag, .schedule-link {
-      display: inline-flex; align-items: center; justify-content: center;
-      height: 48px; width: 150px;
-      font-size: 0.9em; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em;
-      border: 2px solid #000; border-radius: 4px; line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      width: 150px;
+      font-size: 0.9em;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 2px solid #000;
+      border-radius: 4px;
+      line-height: 1;
       transition: background 0.2s ease, color 0.2s ease;
     }
     #liveTag { border: none; background: #999; color: #fff; }
@@ -88,17 +106,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
-    .user-label { font-size: 0.95em; color: #333; }
+    .user-label { font-size: 0.95em; }
     .change-user-btn {
       font-family: monospace;
       font-size: 0.9em;
       border: 2px solid #000;
-      background: transparent;
       padding: 6px 10px;
       border-radius: 6px;
+      background: transparent;
       cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
     }
     .change-user-btn:hover { background: #000; color: #fff; }
 
@@ -111,11 +130,7 @@
       margin-bottom: 15px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-    .comment {
-      margin-bottom: 10px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
+    .comment { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
     .comment strong { color: #444; }
     .comment small { color: #777; }
 
@@ -154,8 +169,9 @@
       width: min(92vw, 460px);
       background: #fff;
       border: 2px solid #000;
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      padding: 18px;
       text-align: left;
     }
     .modal-header {
@@ -165,32 +181,23 @@
       margin-bottom: 8px;
     }
     .modal-close {
-      border: 2px solid #000;
       background: transparent;
-      border-radius: 6px;
+      border: 2px solid #000;
+      border-radius: 8px;
+      padding: 4px 8px;
       cursor: pointer;
-      padding: 3px 8px;
+      font-family: monospace;
     }
-    .modal-body input {
-      width: 100%;
+    .modal-body p { margin: 0 0 10px; color: #333; }
+    .input-row { display: flex; gap: 8px; margin-top: 8px; }
+    .input-row input {
+      flex: 1;
       padding: 10px;
       border: 2px solid #000;
       border-radius: 8px;
       font-family: monospace;
     }
-    .modal-footer {
-      text-align: right;
-      margin-top: 10px;
-    }
-    .modal-footer button {
-      font-family: monospace;
-      border: 2px solid #000;
-      border-radius: 8px;
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    .btn-primary { background: #000; color: #fff; }
-    .btn-primary:hover { background: #333; }
+    .cooldown-note { color: #555; font-size: 0.9em; margin-top: 6px; }
 
     .how-section {
       max-width: 700px;
@@ -215,16 +222,11 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
-    footer { margin-top: 100px; font-size: 0.9em; color: #555; padding-bottom: 30px; }
-    audio { display: none; }
-
-    @media (max-width: 600px) {
-      header { height: 160px; }
-      .site-logo { width: 75vw; }
-      .play-button { width: 110px; height: 110px; }
-      .controls { flex-direction: column; gap: 10px; }
-      #liveTag, .schedule-link { width: 130px; }
-      .how-section, .comments-section { margin: 70px auto 50px; }
+    footer {
+      margin-top: 100px;
+      font-size: 0.9em;
+      color: #555;
+      padding-bottom: 30px;
     }
   </style>
 </head>
@@ -244,7 +246,7 @@
   <section class="comments-section" id="commentsSection">
     <h2>Comments</h2>
     <div class="user-bar">
-      <div class="user-label">Posting as: <strong id="userDisplay">Anonymous</strong></div>
+      <span class="user-label">Posting as: <strong id="userDisplay">Anonymous</strong></span>
       <button class="change-user-btn" id="changeUserBtn">Change User</button>
     </div>
     <div id="comments"></div>
@@ -259,33 +261,30 @@
     <p>
       First, I set up Icecast, which broadcasts audio from a DJ/radio tool called <strong>BUTT</strong>,
       to a URL starting with <code>http</code>. Then I took my <code>http</code> Icecast link through
-      a program called <strong>Cloudflare</strong> to make it start with <code>https</code> — because
-      the website you’re reading this from is <code>https</code>, and <code>http</code> audio
-      can’t be broadcasted through a secure site.<br><br>
+      <strong>Cloudflare</strong> to make it <code>https</code> — because
+      this site is <code>https</code> and <code>http</code> audio can’t play here.
+      <br><br>
       Then I spent 70 years and 70 days coding this website in HTML.
-      (I’m joking — I used ChatGPT, because all this work had me exhausted,
-      and I couldn’t be bothered to code on top of all that 😭🙏)
+      (I’m joking — I used ChatGPT 😭🙏)
     </p>
   </section>
 
   <footer>Streaming live via Icecast + BUTT.</footer>
   <audio id="player" crossorigin="anonymous"></audio>
 
-  <!-- Username Modal -->
+  <!-- USERNAME MODAL -->
   <div class="modal-backdrop" id="userModal">
     <div class="modal">
       <div class="modal-header">
-        <strong>Change Username</strong>
-        <button class="modal-close" id="closeModal">X</button>
+        <h3>Change Username</h3>
+        <button id="closeModal" class="modal-close">Close</button>
       </div>
       <div class="modal-body">
-        <p>Choose your display name (you can change it once every 7 days).</p>
-        <input type="text" id="usernameInput" placeholder="Enter new username">
-        <p id="cooldownNote" style="color:#555;font-size:0.9em;margin-top:6px;"></p>
+        <p>Pick the name that appears on your comments.</p>
+        <div class="input-row"><input id="usernameInput" placeholder="Enter new username"></div>
+        <div class="cooldown-note" id="cooldownNote"></div>
       </div>
-      <div class="modal-footer">
-        <button class="btn-primary" id="saveUsername">Save</button>
-      </div>
+      <button id="saveUsername" class="change-user-btn">Save</button>
     </div>
   </div>
 
@@ -307,11 +306,10 @@
     const db = getDatabase(app);
     const commentsRef = ref(db, "comments");
 
+    const commentsSection = document.getElementById("commentsSection");
     const commentsDiv = document.getElementById("comments");
     const commentForm = document.getElementById("commentForm");
     const commentInput = document.getElementById("commentInput");
-    const commentsSection = document.getElementById("commentsSection");
-
     const userDisplay = document.getElementById("userDisplay");
     const userModal = document.getElementById("userModal");
     const usernameInput = document.getElementById("usernameInput");
@@ -323,35 +321,42 @@
     let username = localStorage.getItem("faes_username") || "Anonymous";
     let lastChange = Number(localStorage.getItem("faes_lastChange")) || 0;
     const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
     userDisplay.textContent = username;
 
     function canChange() {
-      const now = Date.now();
-      return now - lastChange > WEEK_MS;
+      return Date.now() - lastChange > WEEK_MS;
+    }
+    function updateCooldownNote() {
+      if (canChange()) {
+        cooldownNote.textContent = "You can change your username now.";
+        saveUsername.disabled = false;
+        saveUsername.style.opacity = 1;
+      } else {
+        const hoursLeft = Math.ceil((WEEK_MS - (Date.now() - lastChange)) / (1000 * 60 * 60));
+        cooldownNote.textContent = `You can change again in ~${hoursLeft} hours.`;
+        saveUsername.disabled = true;
+        saveUsername.style.opacity = 0.5;
+      }
     }
 
     changeUserBtn.onclick = () => {
       userModal.style.display = "flex";
       usernameInput.value = username;
-      cooldownNote.textContent = canChange()
-        ? "You can change your username now."
-        : "You can change it again in " +
-          Math.ceil((WEEK_MS - (Date.now() - lastChange)) / (1000 * 60 * 60)) +
-          " hours.";
-      saveUsername.disabled = !canChange();
-      saveUsername.style.opacity = canChange() ? 1 : 0.5;
+      updateCooldownNote();
     };
     closeModal.onclick = () => (userModal.style.display = "none");
     saveUsername.onclick = () => {
-      if (!usernameInput.value.trim()) return alert("Enter a username.");
-      username = usernameInput.value.trim();
-      userDisplay.textContent = username;
+      if (!canChange()) return;
+      const newName = usernameInput.value.trim();
+      if (!newName) return alert("Enter a username.");
+      username = newName;
       localStorage.setItem("faes_username", username);
       localStorage.setItem("faes_lastChange", Date.now());
+      userDisplay.textContent = username;
       userModal.style.display = "none";
     };
 
+    // Comments
     onValue(commentsRef, (snapshot) => {
       const data = snapshot.val();
       commentsDiv.innerHTML = "";
@@ -382,15 +387,14 @@
       return str.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
     }
 
-    // --- AUDIO + COMMENT TOGGLE ---
-    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream"; // fdsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    // Player
+    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream";
     const audio = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
     const iconPlay = document.getElementById("iconPlay");
     const iconPause = document.getElementById("iconPause");
     const liveTag = document.getElementById("liveTag");
-    let playing = false;
-    let isLive = false;
+    let playing = false, isLive = false;
     audio.src = STREAM_URL;
 
     playBtn.addEventListener("click", async () => {
@@ -403,13 +407,10 @@
         liveTag.textContent = "Paused";
         liveTag.className = "paused";
         commentsSection.style.display = "none";
-        remove(commentsRef);
         return;
       }
-
       liveTag.textContent = "Connecting";
       liveTag.className = "paused";
-
       try {
         await audio.play();
         playing = true;
@@ -428,6 +429,8 @@
         iconPause.style.display = "none";
         liveTag.textContent = "Offline";
         liveTag.className = "offline";
+        commentsSection.style.display = "none";
+        remove(commentsRef);
       }
     });
   </script>
