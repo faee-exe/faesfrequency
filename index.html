@@ -26,6 +26,7 @@
       text-align: center;
     }
 
+    /* --- HEADER (Fixed scaling like schedule.html) --- */
     header {
       background: #d6d6d2;
       height: 220px;
@@ -34,7 +35,6 @@
       justify-content: center;
       overflow: hidden;
     }
-
     .site-logo {
       width: min(55vw, 480px);
       height: auto;
@@ -42,7 +42,12 @@
       transition: transform 0.3s ease;
     }
     .site-logo:hover { transform: scale(1.03); }
+    @media (max-width: 600px) {
+      header { height: 160px; }
+      .site-logo { width: 75vw; }
+    }
 
+    /* --- PLAY BUTTON --- */
     .play-button {
       background: #000;
       border-radius: 50%;
@@ -59,6 +64,7 @@
     .play-button:active { transform: translateY(4px) scale(0.96); }
     .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
+    /* --- CONTROLS --- */
     .controls {
       display: flex;
       justify-content: center;
@@ -67,7 +73,8 @@
       margin-top: 20px;
       flex-wrap: wrap;
     }
-    #liveTag, .schedule-link {
+    #liveTag,
+    .schedule-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -78,23 +85,32 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       border: 2px solid #000;
-      border-radius: 4px;
-      line-height: 1;
       transition: background 0.2s ease, color 0.2s ease;
+      line-height: 1;
+      border-radius: 4px;
     }
-    #liveTag { border: none; background: #999; color: #fff; }
+    #liveTag {
+      border: none;
+      background: #999;
+      color: #fff;
+    }
     .live { background: #ff4747; color: #fff; }
     .offline { background: #999; color: #fff; }
     .paused { background: #d6d6d2; color: #000; }
-    .schedule-link { color: #000; text-decoration: none; background: transparent; }
+    .schedule-link {
+      color: #000;
+      text-decoration: none;
+      background: transparent;
+    }
     .schedule-link:hover { background: #000; color: #fff; }
 
+    /* --- COMMENTS SECTION --- */
     .comments-section {
       max-width: 700px;
       margin: 80px auto 60px;
       padding: 0 20px;
       text-align: left;
-      display: none;
+      display: none; /* Hidden until stream is live */
     }
     .comments-section h2 {
       text-align: center;
@@ -102,25 +118,11 @@
       font-size: 1.4em;
       margin-bottom: 12px;
     }
-    .user-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    .user-label { font-size: 0.95em; }
-    .change-user-btn {
-      font-family: monospace;
+    #userMeta {
       font-size: 0.9em;
-      border: 2px solid #000;
-      padding: 6px 10px;
-      border-radius: 6px;
-      background: transparent;
-      cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
+      margin-bottom: 10px;
+      color: #333;
     }
-    .change-user-btn:hover { background: #000; color: #fff; }
-
     #comments {
       background: #fff;
       border: 2px solid #d6d6d2;
@@ -130,10 +132,13 @@
       margin-bottom: 15px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-    .comment { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    .comment {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
     .comment strong { color: #444; }
     .comment small { color: #777; }
-
     .comment-form {
       display: flex;
       flex-direction: column;
@@ -156,71 +161,18 @@
     }
     .comment-form button:hover { background: #333; }
 
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.4);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-    }
-    .modal {
-      width: min(92vw, 460px);
-      background: #fff;
-      border: 2px solid #000;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-      padding: 18px;
-      text-align: left;
-    }
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-    }
-    .modal-close {
+    .change-user-btn {
       background: transparent;
       border: 2px solid #000;
-      border-radius: 8px;
-      padding: 4px 8px;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: monospace;
+      font-size: 0.9em;
       cursor: pointer;
-      font-family: monospace;
+      transition: background 0.2s ease, color 0.2s ease;
+      margin-bottom: 10px;
     }
-    .modal-body p { margin: 0 0 10px; color: #333; }
-    .input-row { display: flex; gap: 8px; margin-top: 8px; }
-    .input-row input {
-      flex: 1;
-      padding: 10px;
-      border: 2px solid #000;
-      border-radius: 8px;
-      font-family: monospace;
-    }
-    .cooldown-note { color: #555; font-size: 0.9em; margin-top: 6px; }
-
-    .how-section {
-      max-width: 700px;
-      margin: 100px auto 80px;
-      padding: 0 20px;
-      text-align: left;
-      line-height: 1.6;
-      color: #222;
-    }
-    .how-section h2 {
-      text-align: center;
-      text-transform: uppercase;
-      font-size: 1.4em;
-      margin-bottom: 30px;
-      letter-spacing: 0.05em;
-    }
-    .how-section p {
-      background: #fff;
-      border: 2px solid #d6d6d2;
-      padding: 20px 25px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
+    .change-user-btn:hover { background: #000; color: #fff; }
 
     footer {
       margin-top: 100px;
@@ -228,27 +180,31 @@
       color: #555;
       padding-bottom: 30px;
     }
+    audio { display: none; }
   </style>
 </head>
 <body>
-  <header><img src="logo.png" alt="faesFrequency logo" class="site-logo"></header>
+  <header>
+    <img src="logo.png" alt="faesFrequency logo" class="site-logo">
+  </header>
 
+  <!-- PLAY BUTTON -->
   <div class="play-button" id="playBtn">
     <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
+  <!-- CONTROLS -->
   <div class="controls">
     <div id="liveTag" class="offline"></div>
     <a href="schedule.html" class="schedule-link">Schedule</a>
   </div>
 
+  <!-- COMMENTS SECTION -->
   <section class="comments-section" id="commentsSection">
     <h2>Comments</h2>
-    <div class="user-bar">
-      <span class="user-label">Posting as: <strong id="userDisplay">Anonymous</strong></span>
-      <button class="change-user-btn" id="changeUserBtn">Change User</button>
-    </div>
+    <div id="userMeta">Posting as: <strong id="currentUser">Anonymous</strong></div>
+    <button class="change-user-btn" id="changeUser">Change User</button>
     <div id="comments"></div>
     <form id="commentForm" class="comment-form">
       <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
@@ -256,38 +212,12 @@
     </form>
   </section>
 
-  <section class="how-section">
-    <h2>How Did You Do This?</h2>
-    <p>
-      First, I set up Icecast, which broadcasts audio from a DJ/radio tool called <strong>BUTT</strong>,
-      to a URL starting with <code>http</code>. Then I took my <code>http</code> Icecast link through
-      <strong>Cloudflare</strong> to make it <code>https</code> — because
-      this site is <code>https</code> and <code>http</code> audio can’t play here.
-      <br><br>
-      Then I spent 70 years and 70 days coding this website in HTML.
-      (I’m joking — I used ChatGPT 😭🙏)
-    </p>
-  </section>
-
+  <!-- FOOTER -->
   <footer>Streaming live via Icecast + BUTT.</footer>
+
   <audio id="player" crossorigin="anonymous"></audio>
 
-  <!-- USERNAME MODAL -->
-  <div class="modal-backdrop" id="userModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3>Change Username</h3>
-        <button id="closeModal" class="modal-close">Close</button>
-      </div>
-      <div class="modal-body">
-        <p>Pick the name that appears on your comments.</p>
-        <div class="input-row"><input id="usernameInput" placeholder="Enter new username"></div>
-        <div class="cooldown-note" id="cooldownNote"></div>
-      </div>
-      <button id="saveUsername" class="change-user-btn">Save</button>
-    </div>
-  </div>
-
+  <!-- Firebase Comments -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
     import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
@@ -306,57 +236,42 @@
     const db = getDatabase(app);
     const commentsRef = ref(db, "comments");
 
-    const commentsSection = document.getElementById("commentsSection");
     const commentsDiv = document.getElementById("comments");
     const commentForm = document.getElementById("commentForm");
     const commentInput = document.getElementById("commentInput");
-    const userDisplay = document.getElementById("userDisplay");
-    const userModal = document.getElementById("userModal");
-    const usernameInput = document.getElementById("usernameInput");
-    const saveUsername = document.getElementById("saveUsername");
-    const changeUserBtn = document.getElementById("changeUserBtn");
-    const closeModal = document.getElementById("closeModal");
-    const cooldownNote = document.getElementById("cooldownNote");
+    const currentUserEl = document.getElementById("currentUser");
+    const changeUserBtn = document.getElementById("changeUser");
+    const commentsSection = document.getElementById("commentsSection");
 
-    let username = localStorage.getItem("faes_username") || "Anonymous";
-    let lastChange = Number(localStorage.getItem("faes_lastChange")) || 0;
+    let username = localStorage.getItem("faes_username") || "";
+    let userSetAt = parseInt(localStorage.getItem("faes_userSetAt") || "0", 10);
+
     const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-    userDisplay.textContent = username;
 
-    function canChange() {
-      return Date.now() - lastChange > WEEK_MS;
+    function updateUsernameDisplay() {
+      currentUserEl.textContent = username || "Anonymous";
     }
-    function updateCooldownNote() {
-      if (canChange()) {
-        cooldownNote.textContent = "You can change your username now.";
-        saveUsername.disabled = false;
-        saveUsername.style.opacity = 1;
-      } else {
-        const hoursLeft = Math.ceil((WEEK_MS - (Date.now() - lastChange)) / (1000 * 60 * 60));
-        cooldownNote.textContent = `You can change again in ~${hoursLeft} hours.`;
-        saveUsername.disabled = true;
-        saveUsername.style.opacity = 0.5;
+
+    function canChangeUser() {
+      return Date.now() - userSetAt > WEEK_MS;
+    }
+
+    changeUserBtn.addEventListener("click", () => {
+      if (!canChangeUser()) {
+        alert("You can change your username only once every 7 days.");
+        return;
       }
-    }
+      const newUser = prompt("Enter a new username:");
+      if (newUser) {
+        username = newUser.trim();
+        localStorage.setItem("faes_username", username);
+        localStorage.setItem("faes_userSetAt", Date.now().toString());
+        updateUsernameDisplay();
+      }
+    });
 
-    changeUserBtn.onclick = () => {
-      userModal.style.display = "flex";
-      usernameInput.value = username;
-      updateCooldownNote();
-    };
-    closeModal.onclick = () => (userModal.style.display = "none");
-    saveUsername.onclick = () => {
-      if (!canChange()) return;
-      const newName = usernameInput.value.trim();
-      if (!newName) return alert("Enter a username.");
-      username = newName;
-      localStorage.setItem("faes_username", username);
-      localStorage.setItem("faes_lastChange", Date.now());
-      userDisplay.textContent = username;
-      userModal.style.display = "none";
-    };
+    updateUsernameDisplay();
 
-    // Comments
     onValue(commentsRef, (snapshot) => {
       const data = snapshot.val();
       commentsDiv.innerHTML = "";
@@ -365,7 +280,11 @@
         comments.forEach((c) => {
           const div = document.createElement("div");
           div.className = "comment";
-          div.innerHTML = `<strong>${sanitize(c.user)}</strong> <small>• ${new Date(c.time).toLocaleString()}</small><div>${sanitize(c.text)}</div>`;
+          div.innerHTML = `
+            <strong>${sanitize(c.user)}</strong>
+            <small> • ${new Date(c.time).toLocaleString()}</small>
+            <div>${sanitize(c.text)}</div>
+          `;
           commentsDiv.appendChild(div);
         });
       } else {
@@ -377,6 +296,12 @@
       e.preventDefault();
       const text = commentInput.value.trim();
       if (!text) return;
+      if (!username) {
+        username = prompt("Enter a username:") || "Anonymous";
+        localStorage.setItem("faes_username", username);
+        localStorage.setItem("faes_userSetAt", Date.now().toString());
+        updateUsernameDisplay();
+      }
       const newComment = { user: username, text, time: Date.now() };
       const newRef = push(commentsRef);
       set(newRef, newComment);
@@ -384,17 +309,22 @@
     });
 
     function sanitize(str) {
-      return str.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
+      return str.replace(/[&<>"']/g, (m) => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]
+      ));
     }
 
-    // Player
+    /* ===== AUDIO PLAYER ===== */
     const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream";
     const audio = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
     const iconPlay = document.getElementById("iconPlay");
     const iconPause = document.getElementById("iconPause");
     const liveTag = document.getElementById("liveTag");
-    let playing = false, isLive = false;
+
+    let playing = false;
+    let isLive = false;
+    liveTag.textContent = "";
     audio.src = STREAM_URL;
 
     playBtn.addEventListener("click", async () => {
@@ -406,11 +336,12 @@
         iconPause.style.display = "none";
         liveTag.textContent = "Paused";
         liveTag.className = "paused";
-        commentsSection.style.display = "none";
         return;
       }
+
       liveTag.textContent = "Connecting";
       liveTag.className = "paused";
+
       try {
         await audio.play();
         playing = true;
@@ -421,7 +352,7 @@
         liveTag.textContent = "Live Now";
         liveTag.className = "live";
         commentsSection.style.display = "block";
-      } catch {
+      } catch (e) {
         playing = false;
         isLive = false;
         playBtn.style.background = "#000";
@@ -429,9 +360,20 @@
         iconPause.style.display = "none";
         liveTag.textContent = "Offline";
         liveTag.className = "offline";
-        commentsSection.style.display = "none";
-        remove(commentsRef);
       }
+    });
+
+    audio.addEventListener("pause", async () => {
+      if (isLive) {
+        liveTag.textContent = "Offline";
+        liveTag.className = "offline";
+        commentsSection.style.display = "none";
+        await remove(commentsRef);
+      }
+      playBtn.style.background = "#000";
+      iconPlay.style.display = "block";
+      iconPause.style.display = "none";
+      playing = false;
     });
   </script>
 </body>
