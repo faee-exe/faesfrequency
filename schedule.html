@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>faesFrequency — Broadcast Schedule</title>
-  <meta name="description" content="faesFrequency weekly radio show schedule.">
+  <title>faesFrequency — transmitting sound through the static</title>
+  <meta name="description" content="faesFrequency is an independent digital radio stream broadcasting live through Icecast.">
 
   <!-- 🖼️ Favicon -->
   <link rel="icon" type="image/png" href="favicon.png" sizes="32x32">
   <link rel="apple-touch-icon" href="favicon.png">
 
   <!-- 📡 Open Graph -->
-  <meta property="og:title" content="faesFrequency — Schedule">
-  <meta property="og:description" content="Broadcast lineup for faesFrequency Radio">
+  <meta property="og:title" content="faesFrequency">
+  <meta property="og:description" content="transmitting sound through the static">
   <meta property="og:image" content="https://faee-exe.github.io/faestaste/logo.png">
-  <meta property="og:url" content="https://faee-exe.github.io/faestaste/schedule.html">
+  <meta property="og:url" content="https://faee-exe.github.io/faestaste/">
   <meta name="theme-color" content="#d6d6d2">
 
   <style>
@@ -26,7 +26,7 @@
       text-align: center;
     }
 
-    /* --- HEADER --- */
+    /* --- HEADER (Fixed scaling like schedule.html) --- */
     header {
       background: #d6d6d2;
       height: 220px;
@@ -35,56 +35,34 @@
       justify-content: center;
       overflow: hidden;
     }
-
     .site-logo {
-      width: min(55vw, 480px); /* same behavior as index */
+      width: min(55vw, 480px);
       height: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
     }
-
-    .site-logo:hover {
-      transform: scale(1.03);
+    .site-logo:hover { transform: scale(1.03); }
+    @media (max-width: 600px) {
+      header { height: 160px; }
+      .site-logo { width: 75vw; }
     }
 
-    /* --- CONTENT --- */
-    .content {
-      max-width: 800px;
-      margin: 80px auto 60px;
-      padding: 0 20px;
-      text-align: left;
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 1.8em;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 40px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th, td {
-      padding: 12px;
-      border-bottom: 2px solid #d6d6d2;
-    }
-
-    th {
+    /* --- PLAY BUTTON --- */
+    .play-button {
       background: #000;
-      color: #fff;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-size: 0.9em;
+      border-radius: 50%;
+      width: 130px;
+      height: 130px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 80px auto 35px;
+      cursor: pointer;
+      transition: transform 0.1s ease, background 0.2s ease;
+      user-select: none;
     }
-
-    tr:hover td {
-      background: #eee;
-    }
+    .play-button:active { transform: translateY(4px) scale(0.96); }
+    .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
     /* --- CONTROLS --- */
     .controls {
@@ -92,12 +70,11 @@
       justify-content: center;
       align-items: center;
       gap: 14px;
-      margin-top: 60px;
+      margin-top: 20px;
       flex-wrap: wrap;
     }
-
-    .schedule-link,
-    .home-link {
+    #liveTag,
+    .schedule-link {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -108,29 +85,94 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
       border: 2px solid #000;
-      border-radius: 4px;
-      text-decoration: none;
       transition: background 0.2s ease, color 0.2s ease;
+      line-height: 1;
+      border-radius: 4px;
     }
-
-    .schedule-link {
-      background: #000;
+    #liveTag {
+      border: none;
+      background: #999;
       color: #fff;
     }
-
-    .schedule-link:hover {
-      background: #333;
-    }
-
-    .home-link {
+    .live { background: #ff4747; color: #fff; }
+    .offline { background: #999; color: #fff; }
+    .paused { background: #d6d6d2; color: #000; }
+    .schedule-link {
       color: #000;
+      text-decoration: none;
       background: transparent;
     }
+    .schedule-link:hover { background: #000; color: #fff; }
 
-    .home-link:hover {
+    /* --- COMMENTS SECTION --- */
+    .comments-section {
+      max-width: 700px;
+      margin: 80px auto 60px;
+      padding: 0 20px;
+      text-align: left;
+      display: none; /* Hidden until stream is live */
+    }
+    .comments-section h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      margin-bottom: 12px;
+    }
+    #userMeta {
+      font-size: 0.9em;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    #comments {
+      background: #fff;
+      border: 2px solid #d6d6d2;
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 100px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .comment {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+    .comment strong { color: #444; }
+    .comment small { color: #777; }
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .comment-form textarea, .comment-form button {
+      font-family: monospace;
+      font-size: 1em;
+      padding: 10px;
+      border: 2px solid #000;
+      border-radius: 6px;
+    }
+    .comment-form textarea { resize: vertical; height: 60px; }
+    .comment-form button {
       background: #000;
       color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
     }
+    .comment-form button:hover { background: #333; }
+
+    .change-user-btn {
+      background: transparent;
+      border: 2px solid #000;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-family: monospace;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+      margin-bottom: 10px;
+    }
+    .change-user-btn:hover { background: #000; color: #fff; }
 
     footer {
       margin-top: 100px;
@@ -138,84 +180,201 @@
       color: #555;
       padding-bottom: 30px;
     }
-
-    /* --- RESPONSIVE --- */
-    @media (max-width: 600px) {
-      header {
-        height: 160px;
-      }
-
-      .site-logo {
-        width: 75vw;
-      }
-
-      .content {
-        margin: 60px auto 40px;
-      }
-
-      .controls {
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .schedule-link,
-      .home-link {
-        width: 130px;
-      }
-
-      table th, table td {
-        font-size: 0.9em;
-      }
-    }
+    audio { display: none; }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
   <header>
     <img src="logo.png" alt="faesFrequency logo" class="site-logo">
   </header>
 
-  <!-- CONTENT -->
-  <div class="content">
-    <h1>Broadcast Schedule</h1>
-    <table>
-      <tr>
-        <th>Day</th>
-        <th>Show</th>
-        <th>Time (UTC)</th>
-      </tr>
-      <tr>
-        <td>Monday</td>
-        <td>Morning Mix — Hosted by Juno</td>
-        <td>10:00 – 12:00</td>
-      </tr>
-      <tr>
-        <td>Wednesday</td>
-        <td>Chill Frequencies — Hosted by Alex</td>
-        <td>18:00 – 20:00</td>
-      </tr>
-      <tr>
-        <td>Friday</td>
-        <td>faesFrequency Live Sessions</td>
-        <td>22:00 – 00:00</td>
-      </tr>
-      <tr>
-        <td>Sunday</td>
-        <td>Ambient Flow — Curated by Mira</td>
-        <td>08:00 – 10:00</td>
-      </tr>
-    </table>
+  <!-- PLAY BUTTON -->
+  <div class="play-button" id="playBtn">
+    <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
   <!-- CONTROLS -->
   <div class="controls">
-    <a href="index.html" class="home-link">Home</a>
+    <div id="liveTag" class="offline"></div>
     <a href="schedule.html" class="schedule-link">Schedule</a>
   </div>
 
+  <!-- COMMENTS SECTION -->
+  <section class="comments-section" id="commentsSection">
+    <h2>Comments</h2>
+    <div id="userMeta">Posting as: <strong id="currentUser">Anonymous</strong></div>
+    <button class="change-user-btn" id="changeUser">Change User</button>
+    <div id="comments"></div>
+    <form id="commentForm" class="comment-form">
+      <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
+      <button type="submit">Post Comment</button>
+    </form>
+  </section>
+
   <!-- FOOTER -->
-  <footer>
-    Streaming live via Icecast + BUTT.
-  </footer>
+  <footer>Streaming live via Icecast + BUTT.</footer>
+
+  <audio id="player" crossorigin="anonymous"></audio>
+
+  <!-- Firebase Comments -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+    import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCewcWr5ZkpzHWrOCxza0yHU38_Vqer9Vg",
+      authDomain: "faesfrequency.firebaseapp.com",
+      databaseURL: "https://faesfrequency-default-rtdb.firebaseio.com",
+      projectId: "faesfrequency",
+      storageBucket: "faesfrequency.firebasestorage.app",
+      messagingSenderId: "686971139183",
+      appId: "1:686971139183:web:05787cbd94e7d49cd7c99a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const commentsRef = ref(db, "comments");
+
+    const commentsDiv = document.getElementById("comments");
+    const commentForm = document.getElementById("commentForm");
+    const commentInput = document.getElementById("commentInput");
+    const currentUserEl = document.getElementById("currentUser");
+    const changeUserBtn = document.getElementById("changeUser");
+    const commentsSection = document.getElementById("commentsSection");
+
+    let username = localStorage.getItem("faes_username") || "";
+    let userSetAt = parseInt(localStorage.getItem("faes_userSetAt") || "0", 10);
+
+    const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+    function updateUsernameDisplay() {
+      currentUserEl.textContent = username || "Anonymous";
+    }
+
+    function canChangeUser() {
+      return Date.now() - userSetAt > WEEK_MS;
+    }
+
+    changeUserBtn.addEventListener("click", () => {
+      if (!canChangeUser()) {
+        alert("You can change your username only once every 7 days.");
+        return;
+      }
+      const newUser = prompt("Enter a new username:");
+      if (newUser) {
+        username = newUser.trim();
+        localStorage.setItem("faes_username", username);
+        localStorage.setItem("faes_userSetAt", Date.now().toString());
+        updateUsernameDisplay();
+      }
+    });
+
+    updateUsernameDisplay();
+
+    onValue(commentsRef, (snapshot) => {
+      const data = snapshot.val();
+      commentsDiv.innerHTML = "";
+      if (data) {
+        const comments = Object.values(data).sort((a, b) => b.time - a.time);
+        comments.forEach((c) => {
+          const div = document.createElement("div");
+          div.className = "comment";
+          div.innerHTML = `
+            <strong>${sanitize(c.user)}</strong>
+            <small> • ${new Date(c.time).toLocaleString()}</small>
+            <div>${sanitize(c.text)}</div>
+          `;
+          commentsDiv.appendChild(div);
+        });
+      } else {
+        commentsDiv.innerHTML = "<p>No comments yet — be the first!</p>";
+      }
+    });
+
+    commentForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const text = commentInput.value.trim();
+      if (!text) return;
+      if (!username) {
+        username = prompt("Enter a username:") || "Anonymous";
+        localStorage.setItem("faes_username", username);
+        localStorage.setItem("faes_userSetAt", Date.now().toString());
+        updateUsernameDisplay();
+      }
+      const newComment = { user: username, text, time: Date.now() };
+      const newRef = push(commentsRef);
+      set(newRef, newComment);
+      commentInput.value = "";
+    });
+
+    function sanitize(str) {
+      return str.replace(/[&<>"']/g, (m) => (
+        { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]
+      ));
+    }
+
+    /* ===== AUDIO PLAYER ===== */
+    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream"; // sdaffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    const audio = document.getElementById("player");
+    const playBtn = document.getElementById("playBtn");
+    const iconPlay = document.getElementById("iconPlay");
+    const iconPause = document.getElementById("iconPause");
+    const liveTag = document.getElementById("liveTag");
+
+    let playing = false;
+    let isLive = false;
+    liveTag.textContent = "";
+    audio.src = STREAM_URL;
+
+    playBtn.addEventListener("click", async () => {
+      if (playing) {
+        audio.pause();
+        playing = false;
+        playBtn.style.background = "#000";
+        iconPlay.style.display = "block";
+        iconPause.style.display = "none";
+        liveTag.textContent = "Paused";
+        liveTag.className = "paused";
+        return;
+      }
+
+      liveTag.textContent = "Connecting";
+      liveTag.className = "paused";
+
+      try {
+        await audio.play();
+        playing = true;
+        isLive = true;
+        playBtn.style.background = "#d6d6d2";
+        iconPlay.style.display = "none";
+        iconPause.style.display = "block";
+        liveTag.textContent = "Live Now";
+        liveTag.className = "live";
+        commentsSection.style.display = "block";
+      } catch (e) {
+        playing = false;
+        isLive = false;
+        playBtn.style.background = "#000";
+        iconPlay.style.display = "block";
+        iconPause.style.display = "none";
+        liveTag.textContent = "Offline";
+        liveTag.className = "offline";
+      }
+    });
+
+    audio.addEventListener("pause", async () => {
+      if (isLive) {
+        liveTag.textContent = "Offline";
+        liveTag.className = "offline";
+        commentsSection.style.display = "none";
+        await remove(commentsRef);
+      }
+      playBtn.style.background = "#000";
+      iconPlay.style.display = "block";
+      iconPause.style.display = "none";
+      playing = false;
+    });
+  </script>
 </body>
 </html>
