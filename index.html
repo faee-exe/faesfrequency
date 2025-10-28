@@ -261,7 +261,7 @@
   <!-- Firebase Comments -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCewcWr5ZkpzHWrOCxza0yHU38_Vqer9Vg",
@@ -356,7 +356,7 @@
     }
 
     /* ===== AUDIO PLAYER ===== */
-    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream"; // ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream";
     const audio = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
     const iconPlay = document.getElementById("iconPlay");
@@ -409,7 +409,7 @@
         liveTag.textContent = "Offline";
         liveTag.className = "offline";
         commentsSection.style.display = "none";
-        await remove(commentsRef);
+        // 👇 Removed the line that cleared comments for everyone
       }
       playBtn.style.background = "#000";
       iconPlay.style.display = "block";
