@@ -110,7 +110,7 @@
       margin: 80px auto 60px;
       padding: 0 20px;
       text-align: left;
-      display: none; /* Hidden until stream is live */
+      display: none;
     }
     .comments-section h2 {
       text-align: center;
@@ -174,12 +174,37 @@
     }
     .change-user-btn:hover { background: #000; color: #fff; }
 
+    /* --- HOW SECTION --- */
+    .how-section {
+      max-width: 700px;
+      margin: 100px auto 80px;
+      padding: 0 20px;
+      text-align: left;
+      line-height: 1.6;
+      color: #222;
+    }
+    .how-section h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-size: 1.4em;
+      margin-bottom: 30px;
+      letter-spacing: 0.05em;
+    }
+    .how-section p {
+      background: #fff;
+      border: 2px solid #d6d6d2;
+      padding: 20px 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
     footer {
       margin-top: 100px;
       font-size: 0.9em;
       color: #555;
       padding-bottom: 30px;
     }
+
     audio { display: none; }
   </style>
 </head>
@@ -210,6 +235,22 @@
       <textarea id="commentInput" placeholder="Write a comment..." required></textarea>
       <button type="submit">Post Comment</button>
     </form>
+  </section>
+
+  <!-- HOW SECTION -->
+  <section class="how-section">
+    <h2>How Did You Do This?</h2>
+    <p>
+      First, I set up Icecast, which broadcasts audio from a DJ/radio tool called <strong>BUTT</strong>,
+      to a URL starting with <code>http</code>. Then I took my <code>http</code> Icecast link through
+      a program called <strong>Cloudflare</strong> to make it start with <code>https</code> — because
+      the website you’re reading this from is <code>https</code>, and <code>http</code> audio
+      can’t be broadcasted through a secure site.
+      <br><br>
+      Then I spent 70 years and 70 days coding this website in HTML.
+      (I’m joking — I used ChatGPT, because all this work had me exhausted,
+      and I couldn’t be bothered to code on top of all that 😭🙏)
+    </p>
   </section>
 
   <!-- FOOTER -->
@@ -315,7 +356,7 @@
     }
 
     /* ===== AUDIO PLAYER ===== */
-    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream";
+    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream"; // ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
     const audio = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
     const iconPlay = document.getElementById("iconPlay");
