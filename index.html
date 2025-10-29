@@ -26,7 +26,6 @@
       text-align: center;
     }
 
-    /* --- HEADER --- */
     header {
       background: #d6d6d2;
       height: 220px;
@@ -35,22 +34,18 @@
       justify-content: center;
       overflow: hidden;
     }
-
     .site-logo {
       width: min(55vw, 480px);
       height: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
     }
-
     .site-logo:hover { transform: scale(1.03); }
-
     @media (max-width: 600px) {
       header { height: 160px; }
       .site-logo { width: 75vw; }
     }
 
-    /* --- PLAY BUTTON --- */
     .play-button {
       background: #000;
       border-radius: 50%;
@@ -64,11 +59,9 @@
       transition: transform 0.1s ease, background 0.2s ease;
       user-select: none;
     }
-
     .play-button:active { transform: translateY(4px) scale(0.96); }
     .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
-    /* --- CONTROLS --- */
     .controls {
       display: flex;
       justify-content: center;
@@ -110,10 +103,8 @@
       text-decoration: none;
       background: transparent;
     }
-
     .schedule-link:hover { background: #000; color: #fff; }
 
-    /* --- COMMENTS SECTION --- */
     .comments-section {
       max-width: 700px;
       margin: 80px auto 60px;
@@ -121,7 +112,6 @@
       text-align: left;
       display: none;
     }
-
     .comments-section h2 {
       text-align: center;
       text-transform: uppercase;
@@ -145,21 +135,11 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
 
-    .comment {
-      margin-bottom: 10px;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
-    }
-
+    .comment { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
     .comment strong { color: #444; }
     .comment small { color: #777; }
 
-    .comment-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
+    .comment-form { display: flex; flex-direction: column; gap: 10px; }
     .comment-form textarea, .comment-form button {
       font-family: monospace;
       font-size: 1em;
@@ -167,17 +147,10 @@
       border: 2px solid #000;
       border-radius: 6px;
     }
-
     .comment-form textarea { resize: vertical; height: 60px; }
-
     .comment-form button {
-      background: #000;
-      color: #fff;
-      cursor: pointer;
-      font-weight: bold;
-      text-transform: uppercase;
+      background: #000; color: #fff; cursor: pointer; font-weight: bold; text-transform: uppercase;
     }
-
     .comment-form button:hover { background: #333; }
 
     .change-user-btn {
@@ -191,10 +164,8 @@
       transition: background 0.2s ease, color 0.2s ease;
       margin-bottom: 10px;
     }
-
     .change-user-btn:hover { background: #000; color: #fff; }
 
-    /* --- HOW SECTION --- */
     .how-section {
       max-width: 700px;
       margin: 100px auto 80px;
@@ -203,7 +174,6 @@
       line-height: 1.6;
       color: #222;
     }
-
     .how-section h2 {
       text-align: center;
       text-transform: uppercase;
@@ -211,7 +181,6 @@
       margin-bottom: 30px;
       letter-spacing: 0.05em;
     }
-
     .how-section p {
       background: #fff;
       border: 2px solid #d6d6d2;
@@ -226,7 +195,6 @@
       color: #555;
       padding-bottom: 30px;
     }
-
     audio { display: none; }
   </style>
 </head>
@@ -326,13 +294,13 @@
       const data = snapshot.val();
       commentsDiv.innerHTML = "";
       if (data) {
-        const comments = Object.values(data).sort((a, b) => b.time - a.time);
+        const comments = Object.values(data).sort((a, b) => new Date(b.time) - new Date(a.time));
         comments.forEach((c) => {
           const div = document.createElement("div");
           div.className = "comment";
           div.innerHTML = `
             <strong>${sanitize(c.user)}</strong>
-            <small> • ${new Date(c.time).toLocaleString()}</small>
+            <small> • ${new Date(c.time).toUTCString()}</small>
             <div>${sanitize(c.text)}</div>
           `;
           commentsDiv.appendChild(div);
@@ -352,7 +320,7 @@
         localStorage.setItem("faes_userSetAt", Date.now().toString());
         updateUsernameDisplay();
       }
-      const newComment = { user: username, text, time: Date.now() };
+      const newComment = { user: username, text, time: new Date().toISOString() }; // ✅ UTC timestamp
       const newRef = push(commentsRef);
       set(newRef, newComment);
       commentInput.value = "";
@@ -364,7 +332,6 @@
       ));
     }
 
-    /* --- AUDIO PLAYER --- */
     const STREAM_URL = "https://hospitals-showtimes-attacks-doug.trycloudflare.com/stream";
     const audio = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
@@ -436,7 +403,6 @@
       playing = false;
     });
 
-    // 🔥 Reset comments ONLY when the stream actually ends/fails
     audio.addEventListener("error", async () => {
       liveTag.textContent = "Offline";
       liveTag.className = "offline";
