@@ -34,12 +34,14 @@
       justify-content: center;
       overflow: hidden;
     }
+
     .site-logo {
       width: min(55vw, 480px);
       height: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
     }
+
     .site-logo:hover { transform: scale(1.03); }
     @media (max-width: 600px) {
       header { height: 160px; }
@@ -133,13 +135,25 @@
       min-height: 100px;
       margin-bottom: 15px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      max-height: 300px; /* ✅ Scrollable comment box */
+      overflow-y: auto;
     }
 
-    .comment { margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+    .comment {
+      margin-bottom: 10px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+    }
+
     .comment strong { color: #444; }
     .comment small { color: #777; }
 
-    .comment-form { display: flex; flex-direction: column; gap: 10px; }
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
     .comment-form textarea, .comment-form button {
       font-family: monospace;
       font-size: 1em;
@@ -147,10 +161,17 @@
       border: 2px solid #000;
       border-radius: 6px;
     }
+
     .comment-form textarea { resize: vertical; height: 60px; }
+
     .comment-form button {
-      background: #000; color: #fff; cursor: pointer; font-weight: bold; text-transform: uppercase;
+      background: #000;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      text-transform: uppercase;
     }
+
     .comment-form button:hover { background: #333; }
 
     .change-user-btn {
@@ -164,6 +185,7 @@
       transition: background 0.2s ease, color 0.2s ease;
       margin-bottom: 10px;
     }
+
     .change-user-btn:hover { background: #000; color: #fff; }
 
     .how-section {
@@ -244,7 +266,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, remove, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCewcWr5ZkpzHWrOCxza0yHU38_Vqer9Vg",
@@ -294,17 +316,24 @@
       const data = snapshot.val();
       commentsDiv.innerHTML = "";
       if (data) {
-        const comments = Object.values(data).sort((a, b) => new Date(b.time) - new Date(a.time));
+        const comments = Object.values(data)
+          .map(c => {
+            const t = typeof c.time === 'number' ? c.time : Date.parse(c.time);
+            return { ...c, _t: isNaN(t) ? 0 : t };
+          })
+          .sort((a, b) => a._t - b._t); // oldest to newest for smooth scroll
         comments.forEach((c) => {
+          const when = c._t ? new Date(c._t).toUTCString() : "time pending…";
           const div = document.createElement("div");
           div.className = "comment";
           div.innerHTML = `
             <strong>${sanitize(c.user)}</strong>
-            <small> • ${new Date(c.time).toUTCString()}</small>
+            <small> • ${when}</small>
             <div>${sanitize(c.text)}</div>
           `;
           commentsDiv.appendChild(div);
         });
+        commentsDiv.scrollTo({ top: commentsDiv.scrollHeight, behavior: "smooth" }); // ✅ scrolls to bottom
       } else {
         commentsDiv.innerHTML = "<p>No comments yet — be the first!</p>";
       }
@@ -320,10 +349,10 @@
         localStorage.setItem("faes_userSetAt", Date.now().toString());
         updateUsernameDisplay();
       }
-      const newComment = { user: username, text, time: new Date().toISOString() }; // ✅ UTC timestamp
       const newRef = push(commentsRef);
-      set(newRef, newComment);
+      set(newRef, { user: username, text, time: serverTimestamp() });
       commentInput.value = "";
+      setTimeout(() => commentsDiv.scrollTo({ top: commentsDiv.scrollHeight, behavior: "smooth" }), 300);
     });
 
     function sanitize(str) {
