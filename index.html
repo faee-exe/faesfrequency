@@ -26,7 +26,7 @@
       text-align: center;
     }
 
-    /* --- HEADER (Fixed scaling like schedule.html) --- */
+    /* --- HEADER --- */
     header {
       background: #d6d6d2;
       height: 220px;
@@ -35,13 +35,16 @@
       justify-content: center;
       overflow: hidden;
     }
+
     .site-logo {
       width: min(55vw, 480px);
       height: auto;
       object-fit: contain;
       transition: transform 0.3s ease;
     }
+
     .site-logo:hover { transform: scale(1.03); }
+
     @media (max-width: 600px) {
       header { height: 160px; }
       .site-logo { width: 75vw; }
@@ -61,6 +64,7 @@
       transition: transform 0.1s ease, background 0.2s ease;
       user-select: none;
     }
+
     .play-button:active { transform: translateY(4px) scale(0.96); }
     .play-button svg { width: 50px; height: 50px; fill: #fff; }
 
@@ -73,6 +77,7 @@
       margin-top: 20px;
       flex-wrap: wrap;
     }
+
     #liveTag,
     .schedule-link {
       display: inline-flex;
@@ -89,19 +94,23 @@
       line-height: 1;
       border-radius: 4px;
     }
+
     #liveTag {
       border: none;
       background: #999;
       color: #fff;
     }
+
     .live { background: #ff4747; color: #fff; }
     .offline { background: #999; color: #fff; }
     .paused { background: #d6d6d2; color: #000; }
+
     .schedule-link {
       color: #000;
       text-decoration: none;
       background: transparent;
     }
+
     .schedule-link:hover { background: #000; color: #fff; }
 
     /* --- COMMENTS SECTION --- */
@@ -112,17 +121,20 @@
       text-align: left;
       display: none;
     }
+
     .comments-section h2 {
       text-align: center;
       text-transform: uppercase;
       font-size: 1.4em;
       margin-bottom: 12px;
     }
+
     #userMeta {
       font-size: 0.9em;
       margin-bottom: 10px;
       color: #333;
     }
+
     #comments {
       background: #fff;
       border: 2px solid #d6d6d2;
@@ -132,18 +144,22 @@
       margin-bottom: 15px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
+
     .comment {
       margin-bottom: 10px;
       border-bottom: 1px solid #eee;
       padding-bottom: 8px;
     }
+
     .comment strong { color: #444; }
     .comment small { color: #777; }
+
     .comment-form {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+
     .comment-form textarea, .comment-form button {
       font-family: monospace;
       font-size: 1em;
@@ -151,7 +167,9 @@
       border: 2px solid #000;
       border-radius: 6px;
     }
+
     .comment-form textarea { resize: vertical; height: 60px; }
+
     .comment-form button {
       background: #000;
       color: #fff;
@@ -159,6 +177,7 @@
       font-weight: bold;
       text-transform: uppercase;
     }
+
     .comment-form button:hover { background: #333; }
 
     .change-user-btn {
@@ -172,6 +191,7 @@
       transition: background 0.2s ease, color 0.2s ease;
       margin-bottom: 10px;
     }
+
     .change-user-btn:hover { background: #000; color: #fff; }
 
     /* --- HOW SECTION --- */
@@ -183,6 +203,7 @@
       line-height: 1.6;
       color: #222;
     }
+
     .how-section h2 {
       text-align: center;
       text-transform: uppercase;
@@ -190,6 +211,7 @@
       margin-bottom: 30px;
       letter-spacing: 0.05em;
     }
+
     .how-section p {
       background: #fff;
       border: 2px solid #d6d6d2;
@@ -213,19 +235,16 @@
     <img src="logo.png" alt="faesFrequency logo" class="site-logo">
   </header>
 
-  <!-- PLAY BUTTON -->
   <div class="play-button" id="playBtn">
     <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
     <svg id="iconPause" viewBox="0 0 24 24" style="display:none;"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
   </div>
 
-  <!-- CONTROLS -->
   <div class="controls">
     <div id="liveTag" class="offline"></div>
     <a href="schedule.html" class="schedule-link">Schedule</a>
   </div>
 
-  <!-- COMMENTS SECTION -->
   <section class="comments-section" id="commentsSection">
     <h2>Comments</h2>
     <div id="userMeta">Posting as: <strong id="currentUser">Anonymous</strong></div>
@@ -237,7 +256,6 @@
     </form>
   </section>
 
-  <!-- HOW SECTION -->
   <section class="how-section">
     <h2>How Did You Do This?</h2>
     <p>
@@ -245,20 +263,17 @@
       to a URL starting with <code>http</code>. Then I took my <code>http</code> Icecast link through
       a program called <strong>Cloudflare</strong> to make it start with <code>https</code> — because
       the website you’re reading this from is <code>https</code>, and <code>http</code> audio
-      can’t be broadcasted through a secure site.
-      <br><br>
+      can’t be broadcasted through a secure site.<br><br>
       Then I spent 70 years and 70 days coding this website in HTML.
       (I’m joking — I used ChatGPT, because all this work had me exhausted,
       and I couldn’t be bothered to code on top of all that 😭🙏)
     </p>
   </section>
 
-  <!-- FOOTER -->
   <footer>Streaming live via Icecast + BUTT.</footer>
 
   <audio id="player" crossorigin="anonymous"></audio>
 
-  <!-- Firebase Comments -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
     import { getDatabase, ref, push, onValue, set, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
@@ -286,16 +301,10 @@
 
     let username = localStorage.getItem("faes_username") || "";
     let userSetAt = parseInt(localStorage.getItem("faes_userSetAt") || "0", 10);
-
     const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
 
-    function updateUsernameDisplay() {
-      currentUserEl.textContent = username || "Anonymous";
-    }
-
-    function canChangeUser() {
-      return Date.now() - userSetAt > WEEK_MS;
-    }
+    function updateUsernameDisplay() { currentUserEl.textContent = username || "Anonymous"; }
+    function canChangeUser() { return Date.now() - userSetAt > WEEK_MS; }
 
     changeUserBtn.addEventListener("click", () => {
       if (!canChangeUser()) {
@@ -355,8 +364,8 @@
       ));
     }
 
-    /* ===== AUDIO PLAYER ===== */
-    const STREAM_URL = "https://first-stakeholders-pci-purple.trycloudflare.com/stream"; // ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+    /* --- AUDIO PLAYER --- */
+    const STREAM_URL = "https://hospitals-showtimes-attacks-doug.trycloudflare.com/stream";
     const audio = document.getElementById("player");
     const playBtn = document.getElementById("playBtn");
     const iconPlay = document.getElementById("iconPlay");
@@ -365,8 +374,13 @@
 
     let playing = false;
     let isLive = false;
+
     liveTag.textContent = "";
     audio.src = STREAM_URL;
+
+    playBtn.addEventListener("mousedown", () => playBtn.style.transform = "translateY(4px) scale(0.96)");
+    playBtn.addEventListener("mouseup", () => playBtn.style.transform = "translateY(0) scale(1)");
+    playBtn.addEventListener("mouseleave", () => playBtn.style.transform = "translateY(0) scale(1)");
 
     playBtn.addEventListener("click", async () => {
       if (playing) {
@@ -377,6 +391,7 @@
         iconPause.style.display = "none";
         liveTag.textContent = "Paused";
         liveTag.className = "paused";
+        commentsSection.style.display = "none";
         return;
       }
 
@@ -401,20 +416,37 @@
         iconPause.style.display = "none";
         liveTag.textContent = "Offline";
         liveTag.className = "offline";
+        commentsSection.style.display = "none";
       }
     });
 
-    audio.addEventListener("pause", async () => {
+    audio.addEventListener("pause", () => {
       if (isLive) {
+        liveTag.textContent = "Paused";
+        liveTag.className = "paused";
+        commentsSection.style.display = "none";
+      } else {
         liveTag.textContent = "Offline";
         liveTag.className = "offline";
         commentsSection.style.display = "none";
-        await remove(commentsRef);
       }
       playBtn.style.background = "#000";
       iconPlay.style.display = "block";
       iconPause.style.display = "none";
       playing = false;
+    });
+
+    // 🔥 Reset comments ONLY when the stream actually ends/fails
+    audio.addEventListener("error", async () => {
+      liveTag.textContent = "Offline";
+      liveTag.className = "offline";
+      commentsSection.style.display = "none";
+      try { await remove(commentsRef); } catch {}
+      isLive = false;
+      playing = false;
+      playBtn.style.background = "#000";
+      iconPlay.style.display = "block";
+      iconPause.style.display = "none";
     });
   </script>
 </body>
