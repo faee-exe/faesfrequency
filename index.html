@@ -89,7 +89,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-    import { getDatabase, ref, push, onValue, set, serverTimestamp, get } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
+    import { getDatabase, ref, push, onValue, set, serverTimestamp, get, remove } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey:"AIzaSyCewcWr5ZkpzHWrOCxza0yHU38_Vqer9Vg",
@@ -128,22 +128,16 @@
       const newUser=prompt("Enter a new username:");
       if(!newUser)return;
       const cleanUser=newUser.trim();
-
-      // ✅ FIXED: Ignore your own previous username by checking current username in localStorage
+      const currentUser=localStorage.getItem("faes_username");
       const snapshot=await get(commentsRef);
       let exists=false;
       if(snapshot.exists()){
         const data=snapshot.val();
         exists=Object.values(data).some(
-          c => c.user===cleanUser && localStorage.getItem("faes_username")!==cleanUser
+          c => c.user===cleanUser && cleanUser!=="faee" && currentUser!==cleanUser
         );
       }
-
-      if(exists){
-        alert("That username is already taken. Please choose another.");
-        return;
-      }
-
+      if(exists){alert("That username is already taken. Please choose another.");return;}
       username=cleanUser;
       localStorage.setItem("faes_username",username);
       localStorage.setItem("faes_userSetAt",Date.now().toString());
@@ -223,6 +217,31 @@
         iconPlay.style.display="block";iconPause.style.display="none";
         liveTag.textContent="Offline";liveTag.className="offline";commentsSection.style.display="none";
       }
+    });
+
+    // ✅ Reset comments when stream truly ends or errors out
+    audio.addEventListener("ended", async () => {
+      liveTag.textContent = "Offline";
+      liveTag.className = "offline";
+      commentsSection.style.display = "none";
+      try { await remove(commentsRef); } catch {}
+      isLive = false;
+      playing = false;
+      playBtn.style.background = "#000";
+      iconPlay.style.display = "block";
+      iconPause.style.display = "none";
+    });
+
+    audio.addEventListener("error", async () => {
+      liveTag.textContent = "Offline";
+      liveTag.className = "offline";
+      commentsSection.style.display = "none";
+      try { await remove(commentsRef); } catch {}
+      isLive = false;
+      playing = false;
+      playBtn.style.background = "#000";
+      iconPlay.style.display = "block";
+      iconPause.style.display = "none";
     });
   </script>
 </body>
