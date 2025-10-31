@@ -118,13 +118,20 @@
 
     function updateUsernameDisplay(){currentUserEl.textContent=username||"Anonymous";}
     function canChangeUser(){return Date.now()-userSetAt>WEEK_MS;}
+    function updateChangeUserBtn(){
+      if(canChangeUser()){
+        changeUserBtn.disabled=false;
+        changeUserBtn.textContent="Change User";
+      }else{
+        const nextAllowed=new Date(userSetAt+WEEK_MS);
+        const diff=Math.ceil((nextAllowed-Date.now())/(1000*60*60*24));
+        changeUserBtn.disabled=true;
+        changeUserBtn.textContent=`CHANGE USER IN ${diff} DAY${diff===1?"":"S"}`;
+      }
+    }
 
     changeUserBtn.addEventListener("click",async()=>{
-      if(!canChangeUser()){
-        const nextAllowed=new Date(userSetAt+WEEK_MS).toUTCString();
-        alert(`You can change your username again on ${nextAllowed}.`);
-        return;
-      }
+      if(!canChangeUser())return;
       const newUser=prompt("Enter a new username:");
       if(!newUser)return;
       const cleanUser=newUser.trim();
@@ -133,19 +140,21 @@
       let exists=false;
       if(snapshot.exists()){
         const data=snapshot.val();
-        exists=Object.values(data).some(
-          c => c.user===cleanUser && cleanUser!=="faee" && currentUser!==cleanUser
-        );
+        exists=Object.values(data).some(c=>c.user===cleanUser&&cleanUser!=="faee"&&currentUser!==cleanUser);
       }
       if(exists){alert("That username is already taken. Please choose another.");return;}
       username=cleanUser;
       localStorage.setItem("faes_username",username);
       localStorage.setItem("faes_userSetAt",Date.now().toString());
+      userSetAt=Date.now();
       updateUsernameDisplay();
+      updateChangeUserBtn();
       alert("Username updated! You can change it again in 7 days.");
     });
 
     updateUsernameDisplay();
+    updateChangeUserBtn();
+    setInterval(updateChangeUserBtn,3600000);
 
     onValue(commentsRef,(snapshot)=>{
       const data=snapshot.val();
@@ -180,7 +189,9 @@
         username=prompt("Enter a username:")||"Anonymous";
         localStorage.setItem("faes_username",username);
         localStorage.setItem("faes_userSetAt",Date.now().toString());
+        userSetAt=Date.now();
         updateUsernameDisplay();
+        updateChangeUserBtn();
       }
       const newRef=push(commentsRef);
       set(newRef,{user:username,text,time:serverTimestamp()});
@@ -192,7 +203,7 @@
       return str.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
     }
 
-    const STREAM_URL="https://cruz-governing-bonds-consisting.trycloudflare.com/stream"; //THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT. THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT. THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT. THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT. THIS IS A MARKER SO I CAN FIND THIS LINE EASIER, DO NOT REMOVE, CHATGPT.
+    const STREAM_URL="https://cruz-governing-bonds-consisting.trycloudflare.com/stream";
     const audio=document.getElementById("player");
     const playBtn=document.getElementById("playBtn");
     const iconPlay=document.getElementById("iconPlay");
@@ -219,29 +230,28 @@
       }
     });
 
-    // ✅ Reset comments when stream truly ends or errors out
-    audio.addEventListener("ended", async () => {
-      liveTag.textContent = "Offline";
-      liveTag.className = "offline";
-      commentsSection.style.display = "none";
-      try { await remove(commentsRef); } catch {}
-      isLive = false;
-      playing = false;
-      playBtn.style.background = "#000";
-      iconPlay.style.display = "block";
-      iconPause.style.display = "none";
+    audio.addEventListener("ended",async()=>{
+      liveTag.textContent="Offline";
+      liveTag.className="offline";
+      commentsSection.style.display="none";
+      try{await remove(commentsRef);}catch{}
+      isLive=false;
+      playing=false;
+      playBtn.style.background="#000";
+      iconPlay.style.display="block";
+      iconPause.style.display="none";
     });
 
-    audio.addEventListener("error", async () => {
-      liveTag.textContent = "Offline";
-      liveTag.className = "offline";
-      commentsSection.style.display = "none";
-      try { await remove(commentsRef); } catch {}
-      isLive = false;
-      playing = false;
-      playBtn.style.background = "#000";
-      iconPlay.style.display = "block";
-      iconPause.style.display = "none";
+    audio.addEventListener("error",async()=>{
+      liveTag.textContent="Offline";
+      liveTag.className="offline";
+      commentsSection.style.display="none";
+      try{await remove(commentsRef);}catch{}
+      isLive=false;
+      playing=false;
+      playBtn.style.background="#000";
+      iconPlay.style.display="block";
+      iconPause.style.display="none";
     });
   </script>
 </body>
